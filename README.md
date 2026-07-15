@@ -1,5 +1,11 @@
 # NeuroStack Explorer
 
+Live GitHub Pages site: [fatgezimb.github.io/neurostack-explorer](https://fatgezimb.github.io/neurostack-explorer/)
+
+The Pages build is generated from the same checked-in artifacts and route
+content as this repository. It is a read-only static snapshot; the complete
+source, validation, and reproducibility record remain here.
+
 NeuroStack Explorer is a personal scientific-software portfolio project by
 Fatgezim “Zim” Bela. It follows one pinned public neurophysiology recording
 through validation, deterministic browser derivatives, descriptive analyses,
