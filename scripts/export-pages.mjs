@@ -11,7 +11,7 @@ for (const route of routes) {
   const response = await fetch(`${server}${route}`);
   if (!response.ok) throw new Error(`${route}: ${response.status}`);
   let html = await response.text();
-  html = html.replace(/(["'(=])\/(?!\/)/g, `$1${basePath}/`);
+  html = html.replace(/(href|src|action|poster|content)=(['"])\/(?!\/)/g, `$1=$2${basePath}/`);
   const directory = route === "/" ? output : join(output, route.slice(1));
   await mkdir(directory, { recursive: true });
   await writeFile(join(directory, "index.html"), html);
