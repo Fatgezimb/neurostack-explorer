@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neurostack-explorer:schema:scientific-artifact-bundle:1",
+  "title": "NeuroStack Explorer generated scientific artifact",
+  "description": "Runtime schema for the versioned dataset, model, interface-demo, manifest, and validation-report JSON files shipped by the project.",
+  "type": "object",
+  "required": ["schemaVersion"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/demoDataset" },
+    { "$ref": "#/$defs/modelResults" },
+    { "$ref": "#/$defs/bridgeStanDemo" },
+    { "$ref": "#/$defs/plenopticDemo" },
+    { "$ref": "#/$defs/artifactManifest" },
+    { "$ref": "#/$defs/validationReport" }
+  ],
+  "$defs": {
+    "finiteNumberArray": {
+      "type": "array",
+      "items": { "type": "number" }
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "modelRecord": {
+      "type": "object",
+      "required": [
+        "label",
+        "status",
+        "origin",
+        "execution",
+        "artifactAvailable",
+        "observed",
+        "predicted",
+        "metricLabel",
+        "metricValue",
+        "disclosure"
+      ],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["computed", "specification-only"] },
+        "origin": { "enum": ["public-derived", "synthetic", "illustrative"] },
+        "execution": { "enum": ["precomputed", "client-derived"] },
+        "artifactAvailable": { "type": "boolean" },
+        "observed": { "$ref": "#/$defs/finiteNumberArray" },
+        "predicted": { "$ref": "#/$defs/finiteNumberArray" },
+        "metricLabel": { "type": "string", "minLength": 1 },
+        "metricValue": { "type": ["number", "null"] },
+        "disclosure": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "artifactAvailable": { "const": true } },
+            "required": ["artifactAvailable"]
+          },
+          "then": {
+            "properties": {
+              "status": { "const": "computed" },
+              "observed": { "type": "array", "minItems": 1 },
+              "predicted": { "type": "array", "minItems": 1 },
+              "metricValue": { "type": "number" }
+            }
+          },
+          "else": {
+            "properties": {
+              "metricValue": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "modelSet": {
+      "type": "object",
+      "required": ["nemos", "sklearn", "pytorch", "stan"],
+      "properties": {
+        "nemos": { "$ref": "#/$defs/modelRecord" },
+        "sklearn": { "$ref": "#/$defs/modelRecord" },
+        "pytorch": { "$ref": "#/$defs/modelRecord" },
+        "stan": { "$ref": "#/$defs/modelRecord" }
+      },
+      "additionalProperties": false
+    },
+    "demoDataset": {
+      "type": "object",
+      "required": [
+        "schemaVersion",
+        "metadata",
+        "position",
+        "units",
+        "derived",
+        "models",
+        "accessibleSummaries"
+      ],
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "required": [
+            "origin",
+            "datasetId",
+            "version",
+            "durationSeconds",
+            "positionSampleIntervalSeconds",
+            "unitIds",
+            "generatedAt",
+            "disclosure"
+          ],
+          "properties": {
+            "origin": { "enum": ["public-derived", "synthetic"] },
+            "datasetId": { "type": "string", "minLength": 1 },
+            "version": { "type": "string", "minLength": 1 },
+            "assetUuid": { "type": ["string", "null"] },
+            "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+            "durationSeconds": { "type": "number", "exclusiveMinimum": 0 },
+            "positionSampleIntervalSeconds": { "type": "number", "exclusiveMinimum": 0 },
+            "unitIds": { "$ref": "#/$defs/nonEmptyStringArray" },
+            "generatedAt": { "type": "string", "format": "date-time" },
+            "disclosure": { "type": "string", "minLength": 1 }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": { "origin": { "const": "synthetic" } },
+                "required": ["origin"]
+              },
+              "then": {
+                "properties": {
+                  "assetUuid": { "type": "null" },
+                  "sha256": { "type": "null" }
+                }
+              }
+            }
+          ]
+        },
+        "position": {
+          "type": "object",
+          "required": ["timestamps", "x", "y", "speed", "coordinateUnit", "speedUnit", "speedMethod"],
+          "properties": {
+            "timestamps": { "$ref": "#/$defs/finiteNumberArray" },
+            "x": { "$ref": "#/$defs/finiteNumberArray" },
+            "y": { "$ref": "#/$defs/finiteNumberArray" },
+            "speed": { "$ref": "#/$defs/finiteNumberArray" },
+            "coordinateUnit": { "type": "string", "minLength": 1 },
+            "speedUnit": { "type": "string", "minLength": 1 },
+            "speedMethod": { "type": "string", "minLength": 1 }
+          }
+        },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "spikeTimes", "spikeTimeUnit", "spikeCount"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "spikeTimes": { "$ref": "#/$defs/finiteNumberArray" },
+              "spikeTimeUnit": { "type": "string", "minLength": 1 },
+              "spikeCount": { "type": "integer", "minimum": 0 }
+            }
+          }
+        },
+        "derived": {
+          "type": "object",
+          "required": [
+            "binSizeSeconds",
+            "timeBins",
+            "populationRate",
+            "unitRates",
+            "tuning",
+            "isiBins",
+            "isiCounts",
+            "crossLagBins",
+            "crossCounts",
+            "embedding"
+          ],
+          "properties": {
+            "binSizeSeconds": { "type": "number", "exclusiveMinimum": 0 },
+            "timeBins": { "$ref": "#/$defs/finiteNumberArray" },
+            "populationRate": { "$ref": "#/$defs/finiteNumberArray" },
+            "unitRates": {
+              "oneOf": [
+                { "type": "array", "items": { "$ref": "#/$defs/finiteNumberArray" } },
+                { "type": "object", "additionalProperties": { "$ref": "#/$defs/finiteNumberArray" } }
+              ]
+            },
+            "tuning": { "type": "object", "required": ["bins", "occupancy", "rate"] },
+            "isiBins": { "$ref": "#/$defs/finiteNumberArray" },
+            "isiCounts": { "$ref": "#/$defs/finiteNumberArray" },
+            "crossLagBins": { "$ref": "#/$defs/finiteNumberArray" },
+            "crossCounts": { "$ref": "#/$defs/finiteNumberArray" },
+            "embedding": { "type": "object", "required": ["x", "y", "unitId"] }
+          }
+        },
+        "models": { "$ref": "#/$defs/modelSet" },
+        "accessibleSummaries": {
+          "type": "object",
+          "required": ["raster", "heatmap", "behavior", "tuning", "isi", "correlation", "prediction", "residual", "embedding", "comparison"],
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "modelResults": {
+      "type": "object",
+      "required": ["schemaVersion", "status", "origin", "execution", "seed", "inputFingerprint", "task", "models", "software", "limitations"],
+      "properties": {
+        "status": { "const": "computed" },
+        "origin": { "const": "public-derived" },
+        "execution": { "const": "precomputed" },
+        "seed": { "type": "integer" },
+        "inputFingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "task": { "type": "object", "required": ["version", "researchQuestion", "target", "features", "split", "metric", "preprocessing", "validationUse"] },
+        "models": { "$ref": "#/$defs/modelSet" },
+        "software": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "minLength": 1 } },
+        "limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "bridgeStanDemo": {
+      "type": "object",
+      "required": ["schemaVersion", "status", "origin", "execution", "seed", "model", "surface", "gradientCheck", "optimizerTrace", "software", "disclosure"],
+      "properties": {
+        "status": { "const": "computed" },
+        "origin": { "const": "illustrative" },
+        "execution": { "const": "precomputed" },
+        "model": { "type": "object", "required": ["sourcePath", "sourceSha256", "parameters", "target"] },
+        "surface": { "type": "object", "required": ["axis", "logDensity", "gradientX", "gradientY"] },
+        "gradientCheck": { "type": "object", "required": ["status", "theta", "analytic", "finiteDifference", "epsilon", "maxAbsoluteError"] },
+        "optimizerTrace": { "type": "object", "required": ["method", "stepSize", "steps"] },
+        "disclosure": { "type": "string", "minLength": 1 }
+      }
+    },
+    "plenopticDemo": {
+      "type": "object",
+      "required": ["schemaVersion", "status", "origin", "execution", "seed", "input", "model", "synthesis", "software", "disclosure"],
+      "properties": {
+        "status": { "const": "computed" },
+        "origin": { "const": "illustrative" },
+        "execution": { "const": "precomputed" },
+        "input": { "type": "object", "required": ["kind", "shape", "range", "pixels", "png", "reuseStatus"] },
+        "model": { "type": "object", "required": ["name", "configuration"] },
+        "synthesis": { "type": "object", "required": ["method", "optimizer", "maxIterations", "completedIterations", "initialLoss", "finalLoss", "checkpoints", "pixels", "png", "differencePng", "pixelMse", "representationMse"] },
+        "disclosure": { "type": "string", "minLength": 1 }
+      }
+    },
+    "artifactManifest": {
+      "type": "object",
+      "required": ["schemaVersion", "generatedAt", "defaultArtifact", "fallbackArtifact", "artifacts", "modelArtifacts", "relatedArtifacts", "provenancePath", "validationPath"],
+      "properties": {
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "defaultArtifact": { "type": "string", "minLength": 1 },
+        "fallbackArtifact": { "type": "string", "minLength": 1 },
+        "artifacts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["id", "path", "mediaType", "sizeBytes", "sha256", "origin", "execution", "license", "disclosure"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "path": { "type": "string", "minLength": 1 },
+              "sizeBytes": { "type": "integer", "minimum": 0 },
+              "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+            }
+          }
+        }
+      }
+    },
+    "validationReport": {
+      "type": "object",
+      "required": ["schemaVersion", "generatedAt", "source", "publicDerivative", "syntheticFallback", "models", "interfaceDemos", "notebook", "blockingIssues", "requiredCaveats", "overallAssessment"],
+      "properties": {
+        "generatedAt": { "type": "string", "format": "date-time" },
+        "source": { "type": "object", "required": ["assetUuid", "expectedSizeBytes", "actualSizeBytes", "expectedSha256", "actualSha256", "pynwbSchemaValidation", "nwbInspector"] },
+        "publicDerivative": { "type": "object", "required": ["status", "path", "sizeBytes", "sha256", "checks"] },
+        "syntheticFallback": { "type": "object", "required": ["status", "path", "sizeBytes", "sha256", "seed", "checks"] },
+        "models": { "type": "object", "required": ["status", "path", "sha256", "inputFingerprint", "taskVersion", "split", "available", "finalTestMeanPoissonDeviance"] },
+        "interfaceDemos": { "type": "object", "required": ["bridgeStan", "plenoptic"] },
+        "notebook": { "type": "object" },
+        "blockingIssues": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "requiredCaveats": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "overallAssessment": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

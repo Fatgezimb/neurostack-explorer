@@ -1,0 +1,168 @@
+.hero {
+  min-height: calc(100svh - 4.6rem);
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(32rem, 1.08fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 2;
+}
+
+.heroCopy h1 {
+  max-width: 10ch;
+}
+
+.disclaimer {
+  max-width: 66ch;
+  margin-top: 2rem;
+  font-size: 0.84rem;
+}
+
+.pipelineStrip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+  list-style: none;
+}
+
+.pipelineStrip li {
+  position: relative;
+  min-height: 9rem;
+  display: grid;
+  align-content: space-between;
+  padding: 1rem;
+  border-right: 1px solid var(--line);
+}
+
+.pipelineStrip li:last-child {
+  border-right: 0;
+}
+
+.pipelineStrip li::after {
+  position: absolute;
+  top: 50%;
+  right: -0.35rem;
+  z-index: 2;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  background: var(--teal);
+  content: "";
+  transform: translateY(-50%);
+}
+
+.pipelineStrip li:last-child::after {
+  display: none;
+}
+
+.pipelineStrip span,
+.pipelineStrip small {
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+}
+
+.toolGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.toolCard {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 2.3vw, 1.65rem);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper-raised) 82%, transparent);
+}
+
+.toolCard p {
+  min-height: 4.8rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.toolHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  color: var(--ink-muted);
+  font-size: 0.72rem;
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  color: var(--teal-dark);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.closing {
+  margin-block: clamp(2rem, 8vw, 7rem);
+  border-top: 1px solid var(--line-strong);
+}
+
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 5rem;
+  }
+
+  .toolGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pipelineStrip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pipelineStrip li:nth-child(3) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero {
+    min-height: auto;
+    padding-top: 3rem;
+  }
+
+  .toolGrid,
+  .pipelineStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .toolCard p {
+    min-height: 0;
+  }
+
+  .pipelineStrip li {
+    min-height: 6.5rem;
+    border-right: 0;
+  }
+
+  .pipelineStrip li::after {
+    top: auto;
+    right: 1rem;
+    bottom: -0.35rem;
+    transform: none;
+  }
+}

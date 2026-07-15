@@ -1,0 +1,87 @@
+name: Verification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Documentation and schema contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - name: Install locked web dependencies
+        run: npm ci
+
+      - name: Validate schema declarations
+        run: node schemas/validate-schemas.mjs
+
+      - name: Confirm required governance documents
+        shell: bash
+        run: |
+          required=(
+            README.md INSTALL.md METHODS.md DATA_PROVENANCE.md MODEL_CARD.md
+            LIMITATIONS.md CONTRIBUTING.md LICENSE CITATIONS.md SECURITY.md
+            ACCESSIBILITY.md DEPLOYMENT.md AGENTS.md PLANS.md data/README.md
+            schemas/README.md Makefile .env.example
+          )
+          for file in "${required[@]}"; do
+            test -s "$file" || { echo "Missing or empty: $file" >&2; exit 1; }
+          done
+
+  web:
+    name: Web lint, types, tests, and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npx tsc --noEmit --incremental false
+
+      - name: Test rendered output
+        run: npm test
+
+  artifact-policy:
+    name: Tracked artifact policy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+
+      - name: Check tracked scientific artifacts
+        run: node .github/workflows/scripts/check-artifact-policy.mjs

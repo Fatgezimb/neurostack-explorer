@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neurostack-explorer:schema:analysis-artifact:1",
+  "title": "NeuroStack Explorer analysis artifact",
+  "description": "Provenance and reproducibility record for a generated scientific or explanatory artifact.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "artifactId",
+    "artifactVersion",
+    "status",
+    "kind",
+    "origin",
+    "execution",
+    "title",
+    "purpose",
+    "inputs",
+    "generator",
+    "reproducibility",
+    "scientificContext",
+    "outputs",
+    "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "artifactVersion": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["planned", "generated", "validated", "rejected"] },
+    "kind": {
+      "enum": [
+        "dataset-derivative",
+        "figure",
+        "table",
+        "model",
+        "posterior",
+        "notebook",
+        "report",
+        "plenoptic-output",
+        "bridgestan-output",
+        "visualization-state"
+      ]
+    },
+    "origin": {
+      "enum": [
+        "synthetic",
+        "illustrative",
+        "open-image",
+        "public-derived"
+      ]
+    },
+    "execution": {
+      "enum": [
+        "precomputed",
+        "client-derived",
+        "computed",
+        "cached",
+        "specification-only"
+      ]
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reference", "sha256", "role"],
+        "properties": {
+          "reference": { "type": "string", "minLength": 1 },
+          "sha256": {
+            "type": ["string", "null"],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "role": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "script",
+        "command",
+        "gitCommit",
+        "environmentLockSha256",
+        "toolVersionsReference"
+      ],
+      "properties": {
+        "script": { "type": ["string", "null"] },
+        "command": { "type": ["string", "null"] },
+        "gitCommit": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{7,64}$"
+        },
+        "environmentLockSha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "toolVersionsReference": { "type": ["string", "null"] }
+      }
+    },
+    "reproducibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deterministic", "seeds", "tolerance", "notes"],
+      "properties": {
+        "deterministic": { "type": ["boolean", "null"] },
+        "seeds": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "tolerance": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "scientificContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sampleDefinition", "sampleCount", "units", "limitations"],
+      "properties": {
+        "sampleDefinition": { "type": ["string", "null"] },
+        "sampleCount": { "type": ["integer", "null"], "minimum": 0 },
+        "units": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["quantity", "unit"],
+            "properties": {
+              "quantity": { "type": "string", "minLength": 1 },
+              "unit": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "mediaType", "byteSize", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "mediaType": { "type": "string", "minLength": 1 },
+          "byteSize": { "type": "integer", "minimum": 0 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "createdAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": {
+          "status": { "enum": ["generated", "validated"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "inputs": { "type": "array", "minItems": 1 },
+          "generator": {
+            "type": "object",
+            "properties": {
+              "script": { "type": "string", "minLength": 1 },
+              "command": { "type": "string", "minLength": 1 },
+              "gitCommit": { "type": "string", "pattern": "^[a-f0-9]{7,64}$" },
+              "environmentLockSha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "toolVersionsReference": { "type": "string", "minLength": 1 }
+            }
+          },
+          "outputs": { "type": "array", "minItems": 1 },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  ]
+}

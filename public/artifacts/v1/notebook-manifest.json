@@ -1,0 +1,61 @@
+{
+  "environmentLockSha256": "dd78ec19d6561eac0fa4d15dd9c050df7d2aae207af08859d8824f2a4e14b4cc",
+  "execution": {
+    "cellCount": 29,
+    "command": "python scripts/execute_notebook.py",
+    "completedAt": null,
+    "durationSeconds": null,
+    "errorCount": 0,
+    "executedCellCount": 14,
+    "startedAt": null,
+    "warnings": [
+      "Wall-clock execution metadata is deliberately stripped after success so identical notebook runs produce identical bytes."
+    ]
+  },
+  "inputs": [
+    {
+      "reference": "public/artifacts/v1/demo-dataset.json",
+      "sha256": "e56d1ded0dad948c2d3ddb82fc23b3ed2f1280dfc6f341c538ecf06a0c307e64"
+    },
+    {
+      "reference": "public/artifacts/v1/synthetic-dataset.json",
+      "sha256": "ad63cff4be0401f28a53f215a414edf5df5f311ac66f4260306a915d46deda49"
+    },
+    {
+      "reference": "public/artifacts/v1/model-results.json",
+      "sha256": "f52bb8738cd375a47aaa56dd4601f1f39d78f35fb10425ca4821d05869b57371"
+    },
+    {
+      "reference": "DANDI:000582/0.251111.2151/sub-10073/sub-10073_ses-17010302_behavior+ecephys.nwb",
+      "sha256": "43b3b435b953d22e276acc494af2926b63deaf15d2834531b2a87d08a8458a09"
+    }
+  ],
+  "kernel": "Python 3.12.13 (release target Python 3.12)",
+  "limitations": [
+    "The notebook opens and validates the checksum-gated local NWB source, reconstructs Pynapple objects, refits the deterministic NeMoS, scikit-learn, and PyTorch lanes, and verifies their values against the committed records. It inspects the committed Stan posterior because resampling Stan would make the notebook unnecessarily slow.",
+    "The notebook was executed in the declared Python 3.12 runtime lane."
+  ],
+  "outputs": [
+    {
+      "mediaType": "application/x-ipynb+json",
+      "path": "public/artifacts/v1/neurostack-explorer.ipynb",
+      "purpose": "Executable audit trail for the committed artifacts.",
+      "sha256": "be764562f28d3a340893ed93e5f4992804016a1d1af0e9934b05398204a10dbd"
+    }
+  ],
+  "path": "public/artifacts/v1/neurostack-explorer.ipynb",
+  "sanitization": {
+    "checkedFor": [
+      "absolute home-directory paths",
+      "common cloud access-key prefixes",
+      "GitHub token prefixes",
+      "OpenAI-style secret-key prefixes",
+      "cell execution errors"
+    ],
+    "notes": "The executed notebook contains repository-relative inputs, bounded text outputs, deterministic cell IDs, and no detected forbidden markers.",
+    "status": "passed"
+  },
+  "schemaVersion": "1.0.0",
+  "sha256": "be764562f28d3a340893ed93e5f4992804016a1d1af0e9934b05398204a10dbd",
+  "status": "executed"
+}

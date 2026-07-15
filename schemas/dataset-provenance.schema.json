@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neurostack-explorer:schema:dataset-provenance:1",
+  "title": "NeuroStack Explorer dataset provenance",
+  "description": "Evidence record for a public neuroscience dataset, selected assets, licenses, transformations, and privacy review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "status",
+    "dataset",
+    "license",
+    "access",
+    "selectedAssets",
+    "derivatives",
+    "privacyReview",
+    "notes"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "enum": ["pending", "verified", "rejected"]
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "authors",
+        "repository",
+        "repositoryUrl",
+        "persistentIdentifier",
+        "persistentIdentifierUrl",
+        "species",
+        "brainRegions",
+        "recordingModalities",
+        "behavioralVariables"
+      ],
+      "properties": {
+        "title": { "type": ["string", "null"] },
+        "authors": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "repository": { "type": ["string", "null"] },
+        "repositoryUrl": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "persistentIdentifier": { "type": ["string", "null"] },
+        "persistentIdentifierUrl": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "species": { "type": ["string", "null"] },
+        "brainRegions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "recordingModalities": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "behavioralVariables": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "name", "spdxId", "url", "redistributionNotes"],
+      "properties": {
+        "status": { "enum": ["pending", "verified", "rejected"] },
+        "name": { "type": ["string", "null"] },
+        "spdxId": { "type": ["string", "null"] },
+        "url": { "type": ["string", "null"], "format": "uri" },
+        "redistributionNotes": { "type": ["string", "null"] }
+      }
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accessedAt", "accessMethod", "requiresAuthentication"],
+      "properties": {
+        "accessedAt": { "type": ["string", "null"], "format": "date-time" },
+        "accessMethod": { "type": ["string", "null"] },
+        "requiresAuthentication": { "type": ["boolean", "null"] }
+      }
+    },
+    "selectedAssets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "assetId",
+          "sourceUrl",
+          "mediaType",
+          "byteSize",
+          "sha256",
+          "exactSelection",
+          "nwbVersion"
+        ],
+        "properties": {
+          "assetId": { "type": "string", "minLength": 1 },
+          "sourceUrl": { "type": ["string", "null"], "format": "uri" },
+          "mediaType": { "type": ["string", "null"] },
+          "byteSize": { "type": ["integer", "null"], "minimum": 0 },
+          "sha256": {
+            "type": ["string", "null"],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "exactSelection": { "type": ["string", "null"] },
+          "nwbVersion": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "derivatives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifactId",
+          "path",
+          "sha256",
+          "sourceAssetSha256",
+          "generatedBy",
+          "generatedAt",
+          "transformations",
+          "isSynthetic"
+        ],
+        "properties": {
+          "artifactId": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "sourceAssetSha256": {
+            "type": ["string", "null"],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "generatedBy": { "type": "string", "minLength": 1 },
+          "generatedAt": { "type": "string", "format": "date-time" },
+          "transformations": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "isSynthetic": { "type": "boolean" }
+        }
+      }
+    },
+    "privacyReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "reviewedAt", "reviewer", "notes"],
+      "properties": {
+        "status": { "enum": ["pending", "passed", "failed"] },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+        "reviewer": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": { "status": { "const": "verified" } },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "dataset": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string", "minLength": 1 },
+              "authors": { "type": "array", "minItems": 1 },
+              "repository": { "type": "string", "minLength": 1 },
+              "repositoryUrl": { "type": "string", "format": "uri" },
+              "persistentIdentifier": { "type": "string", "minLength": 1 },
+              "persistentIdentifierUrl": { "type": "string", "format": "uri" },
+              "species": { "type": "string", "minLength": 1 },
+              "brainRegions": { "type": "array", "minItems": 1 },
+              "recordingModalities": { "type": "array", "minItems": 1 },
+              "behavioralVariables": { "type": "array", "minItems": 1 }
+            }
+          },
+          "license": {
+            "type": "object",
+            "properties": {
+              "status": { "const": "verified" },
+              "name": { "type": "string", "minLength": 1 },
+              "url": { "type": "string", "format": "uri" },
+              "redistributionNotes": { "type": "string", "minLength": 1 }
+            }
+          },
+          "access": {
+            "type": "object",
+            "properties": {
+              "accessedAt": { "type": "string", "format": "date-time" },
+              "accessMethod": { "type": "string", "minLength": 1 },
+              "requiresAuthentication": { "type": "boolean" }
+            }
+          },
+          "selectedAssets": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "sourceUrl": { "type": "string", "format": "uri" },
+                "mediaType": { "type": "string", "minLength": 1 },
+                "byteSize": { "type": "integer", "minimum": 1 },
+                "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                "exactSelection": { "type": "string", "minLength": 1 },
+                "nwbVersion": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "privacyReview": {
+            "type": "object",
+            "properties": {
+              "status": { "const": "passed" },
+              "reviewedAt": { "type": "string", "format": "date-time" },
+              "reviewer": { "type": "string", "minLength": 1 },
+              "notes": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

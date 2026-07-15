@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neurostack-explorer:schema:model-result:1",
+  "title": "NeuroStack Explorer model result",
+  "description": "Task, split, evaluation, leakage, configuration, and artifact record for a model demonstration.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "modelId",
+    "resultVersion",
+    "status",
+    "family",
+    "implementation",
+    "datasetReference",
+    "inputArtifactReferences",
+    "task",
+    "split",
+    "naiveBaseline",
+    "configuration",
+    "metrics",
+    "leakageChecks",
+    "artifacts",
+    "intendedUse",
+    "useLimitations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "modelId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "resultVersion": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["planned", "trained", "evaluated", "rejected"] },
+    "family": {
+      "enum": [
+        "nemos-glm",
+        "scikit-learn",
+        "pytorch",
+        "stan",
+        "bridgestan-interface",
+        "other"
+      ]
+    },
+    "implementation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["estimator", "package", "version", "sourceReference"],
+      "properties": {
+        "estimator": { "type": ["string", "null"] },
+        "package": { "type": ["string", "null"] },
+        "version": { "type": ["string", "null"] },
+        "sourceReference": { "type": ["string", "null"] }
+      }
+    },
+    "datasetReference": { "type": ["string", "null"] },
+    "inputArtifactReferences": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "target", "targetUnit", "observation", "features"],
+      "properties": {
+        "description": { "type": ["string", "null"] },
+        "target": { "type": ["string", "null"] },
+        "targetUnit": { "type": ["string", "null"] },
+        "observation": { "type": ["string", "null"] },
+        "features": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "split": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "groupingUnit",
+        "trainCount",
+        "validationCount",
+        "testCount",
+        "randomSeed",
+        "rationale"
+      ],
+      "properties": {
+        "strategy": { "type": ["string", "null"] },
+        "groupingUnit": { "type": ["string", "null"] },
+        "trainCount": { "type": ["integer", "null"], "minimum": 0 },
+        "validationCount": { "type": ["integer", "null"], "minimum": 0 },
+        "testCount": { "type": ["integer", "null"], "minimum": 0 },
+        "randomSeed": { "type": ["integer", "null"] },
+        "rationale": { "type": ["string", "null"] }
+      }
+    },
+    "naiveBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "metricReference"],
+      "properties": {
+        "description": { "type": ["string", "null"] },
+        "metricReference": { "type": ["string", "null"] }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parameters", "randomSeeds", "device", "fitCommand", "gitCommit"],
+      "properties": {
+        "parameters": { "type": "object" },
+        "randomSeeds": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "device": { "type": ["string", "null"] },
+        "fitCommand": { "type": ["string", "null"] },
+        "gitCommit": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{7,64}$"
+        }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value", "unit", "split", "direction", "uncertainty"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "value": { "type": "number" },
+          "unit": { "type": ["string", "null"] },
+          "split": { "enum": ["train", "validation", "test"] },
+          "direction": { "enum": ["higher-is-better", "lower-is-better", "descriptive"] },
+          "uncertainty": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "leakageChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "evidence"],
+        "properties": {
+          "check": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["pending", "passed", "failed", "not-applicable"] },
+          "evidence": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "intendedUse": { "type": "string", "minLength": 1 },
+    "useLimitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": { "status": { "const": "evaluated" } },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "implementation": {
+            "type": "object",
+            "properties": {
+              "estimator": { "type": "string", "minLength": 1 },
+              "package": { "type": "string", "minLength": 1 },
+              "version": { "type": "string", "minLength": 1 },
+              "sourceReference": { "type": "string", "minLength": 1 }
+            }
+          },
+          "datasetReference": { "type": "string", "minLength": 1 },
+          "inputArtifactReferences": { "type": "array", "minItems": 1 },
+          "task": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string", "minLength": 1 },
+              "target": { "type": "string", "minLength": 1 },
+              "targetUnit": { "type": "string", "minLength": 1 },
+              "observation": { "type": "string", "minLength": 1 },
+              "features": { "type": "array", "minItems": 1 }
+            }
+          },
+          "split": {
+            "type": "object",
+            "properties": {
+              "strategy": { "type": "string", "minLength": 1 },
+              "groupingUnit": { "type": "string", "minLength": 1 },
+              "trainCount": { "type": "integer", "minimum": 1 },
+              "testCount": { "type": "integer", "minimum": 1 },
+              "rationale": { "type": "string", "minLength": 1 }
+            }
+          },
+          "naiveBaseline": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string", "minLength": 1 },
+              "metricReference": { "type": "string", "minLength": 1 }
+            }
+          },
+          "metrics": { "type": "array", "minItems": 1 },
+          "leakageChecks": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": { "enum": ["passed", "not-applicable"] },
+                "evidence": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "artifacts": { "type": "array", "minItems": 1 }
+        }
+      }
+    }
+  ]
+}

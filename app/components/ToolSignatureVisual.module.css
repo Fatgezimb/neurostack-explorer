@@ -1,0 +1,344 @@
+.frame {
+  margin-bottom: 1.2rem;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--paper-raised);
+  box-shadow: var(--shadow-soft);
+}
+
+.frameHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.frameHead > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.frameHead span {
+  color: var(--ink-muted);
+  font-size: 0.62rem;
+}
+
+.disclosure {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+}
+
+.frameBody {
+  min-height: 24rem;
+  padding: clamp(0.75rem, 2vw, 1.2rem);
+}
+
+.splitVisual,
+.notebookVisual,
+.bridgeVisual,
+.nwbVisual {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.2fr);
+  gap: 1rem;
+}
+
+.codeWalkthrough,
+.notebookVisual nav,
+.nwbVisual nav {
+  display: grid;
+  align-content: start;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.codeWalkthrough button,
+.notebookVisual nav button,
+.nwbVisual nav button {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.codeWalkthrough button[aria-pressed="true"],
+.notebookVisual nav button[aria-pressed="true"],
+.nwbVisual nav button[aria-pressed="true"] {
+  background: var(--teal-wash);
+  box-shadow: inset 3px 0 0 var(--teal);
+}
+
+.codeWalkthrough button span,
+.notebookVisual nav button span {
+  color: var(--ink-muted);
+  font: 600 0.62rem/1.4 var(--font-geist-mono), monospace;
+}
+
+.codeWalkthrough code {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.transformGraph {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-content: center;
+  gap: 0.5rem;
+}
+
+.transformGraph > div {
+  min-height: 7rem;
+  display: grid;
+  align-content: space-between;
+  padding: 0.7rem;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.transformGraph > div[data-active="true"] {
+  border-color: var(--teal);
+  background: var(--teal-wash);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--teal) 22%, transparent);
+}
+
+.transformGraph > p {
+  grid-column: 1 / -1;
+  padding: 0.7rem;
+  border-left: 3px solid var(--teal);
+  background: var(--paper-inset);
+  font-size: 0.78rem;
+}
+
+.notebookVisual article,
+.nwbVisual article {
+  padding: 1rem;
+  border: 1px solid var(--line);
+}
+
+.notebookVisual nav button {
+  grid-template-columns: 5rem 1fr;
+}
+
+.visualControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.pynappleTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.8rem;
+}
+
+.pynappleTabs button {
+  min-height: 2.35rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+.pynappleTabs button[aria-pressed="true"] {
+  border-color: var(--teal);
+  background: var(--teal-wash);
+  box-shadow: inset 0 -2px 0 var(--teal);
+}
+
+.objectExplorer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, .65fr);
+  gap: 1rem;
+}
+
+.objectExplorer dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+.objectExplorer dl div { padding: .75rem; border: 1px solid var(--line); }
+.objectExplorer dt { color: var(--ink-muted); font-size: .65rem; }
+.objectExplorer dd { margin: .25rem 0 0; font-size: .78rem; }
+.objectExplorer label { display: grid; align-content: start; gap: .4rem; font-size: .75rem; }
+.objectExplorer :global(.notice) { grid-column: 1 / -1; }
+
+.visualControls label,
+.rangeLabel,
+.bridgeVisual label {
+  flex: 1;
+  min-width: 12rem;
+  display: grid;
+  gap: 0.35rem;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  font-weight: 650;
+}
+
+.visualControls select,
+.visualControls input,
+.rangeLabel input,
+.bridgeVisual input {
+  width: 100%;
+  accent-color: var(--teal);
+}
+
+.signatureSvg {
+  width: 100%;
+  height: 18rem;
+  display: block;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.svgLabel {
+  fill: var(--ink-muted);
+  font: 9px var(--font-geist-mono), monospace;
+}
+
+.nemosVisual {
+  display: grid;
+  grid-template-columns: 0.65fr 1.35fr;
+  gap: 0.8rem;
+}
+
+.nemosVisual .visualControls,
+.nemosVisual p,
+.nemosVisual details {
+  grid-column: 1 / -1;
+}
+
+.matrix {
+  min-height: 18rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  padding: 0.4rem;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.matrix i {
+  background: var(--teal);
+}
+
+.imageCompare {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.imageCompare figure { margin: 0; }
+.imageCompare figcaption { margin-top: 0.35rem; color: var(--ink-muted); font-size: 0.7rem; }
+.imageCompare img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+  image-rendering: pixelated;
+}
+
+.proceduralImage {
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 37% 42%, transparent 0 12%, var(--teal) 12.4% 15%, transparent 15.4%),
+    conic-gradient(from 34deg at 63% 58%, var(--amber), var(--paper-inset), var(--blue), var(--paper-inset), var(--violet));
+}
+
+.proceduralImage[data-variant="synthesis"] { filter: blur(calc((4 - attr(data-checkpoint number)) * .4px)) saturate(.88); transform: rotate(.4deg); }
+.proceduralImage[data-variant="difference"] { background: repeating-linear-gradient(42deg, var(--paper-inset) 0 7px, var(--rose-wash) 7px 12px, var(--teal-wash) 12px 16px); }
+
+.surfaceGrid {
+  position: relative;
+  aspect-ratio: 1.25;
+  display: grid;
+  grid-template-columns: repeat(17, 1fr);
+  gap: 1px;
+  padding: 0.45rem;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.surfaceGrid i { background: var(--violet); }
+.surfaceGrid span { position: absolute; color: var(--amber); font-size: 1.8rem; transform: translate(-50%, -50%); }
+
+.bridgeVisual > div:last-child {
+  display: grid;
+  align-content: center;
+  gap: 0.9rem;
+}
+
+.bridgeVisual dl { display: grid; grid-template-columns: 1fr auto; }
+.bridgeVisual dt, .bridgeVisual dd { padding: 0.55rem; border-top: 1px solid var(--line); }
+.bridgeVisual dt { color: var(--ink-muted); font-size: 0.7rem; }
+.bridgeVisual dd { margin: 0; font-family: var(--font-geist-mono), monospace; font-size: 0.72rem; }
+
+.viewerMini nav { display: flex; gap: 0.4rem; margin-bottom: 0.6rem; }
+.viewerMini nav button { padding: 0.45rem 0.7rem; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-raised); cursor: pointer; }
+.viewerMini nav button[aria-pressed="true"] { background: var(--teal-wash); border-color: var(--teal); }
+.viewerMini > div { padding: 1rem; border: 1px solid var(--line); background: var(--paper-inset); }
+.viewerMini > div p { padding: 0.6rem; border-left: 3px solid var(--violet); background: var(--violet-wash); font-size: 0.75rem; }
+.miniMarks { height: 14rem; display: flex; align-items: end; gap: 3px; margin-top: 0.8rem; }
+.miniMarks i { flex: 1; background: var(--teal); opacity: .64; }
+
+.networkVisual {
+  min-height: 17rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+.networkVisual > div { display: grid; gap: 0.45rem; }
+.networkVisual i { width: 1rem; height: 1rem; display: block; border: 2px solid var(--teal); border-radius: 50%; background: var(--paper-raised); }
+
+.folds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line); }
+.folds > div { min-height: 11rem; display: grid; grid-template-rows: 1fr auto 1fr; border-right: 1px solid var(--line); background: var(--paper-inset); }
+.folds span, .folds strong, .folds i { display: grid; place-items: center; font-size: 0.72rem; font-style: normal; }
+.folds i { min-height: 1.2rem; background: var(--amber-wash); color: var(--amber); }
+.folds > div[data-active="true"] strong { background: var(--violet-wash); color: var(--violet); }
+
+.nwbVisual nav button { grid-template-columns: 1fr; }
+.nwbVisual nav button span { color: var(--ink-muted); font-size: 0.68rem; }
+
+@media (max-width: 800px) {
+  .frameHead,
+  .splitVisual,
+  .notebookVisual,
+  .bridgeVisual,
+  .nwbVisual,
+  .nemosVisual {
+    grid-template-columns: 1fr;
+  }
+
+  .frameHead { display: grid; }
+  .disclosure { justify-content: flex-start; }
+  .transformGraph { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .transformGraph > p { grid-column: 1 / -1; }
+  .nemosVisual .visualControls,
+  .nemosVisual p,
+  .nemosVisual details { grid-column: 1; }
+  .objectExplorer { grid-template-columns: 1fr; }
+  .objectExplorer :global(.notice) { grid-column: 1; }
+}
+
+@media (max-width: 600px) {
+  .imageCompare,
+  .folds { grid-template-columns: 1fr; }
+  .folds > div { min-height: 5rem; grid-template-columns: 1fr auto 1fr; grid-template-rows: 1fr; }
+}

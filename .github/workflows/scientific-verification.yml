@@ -1,0 +1,118 @@
+name: Scientific verification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: scientific-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scientific-release-gate:
+    name: Python, notebook, and artifact release gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
+
+      - name: Require reviewed environment and pipeline
+        shell: bash
+        run: |
+          test -s requirements.lock || {
+            echo "requirements.lock is pending source and compatibility audit." >&2
+            exit 1
+          }
+          test -s scripts/validate_artifacts.py || {
+            echo "scripts/validate_artifacts.py is not implemented." >&2
+            exit 1
+          }
+          test -s data/provenance.json || {
+            echo "data/provenance.json is not verified." >&2
+            exit 1
+          }
+
+      - name: Read reviewed Python version
+        id: python-version
+        shell: bash
+        run: |
+          test -s .python-version || {
+            echo ".python-version is pending compatibility audit." >&2
+            exit 1
+          }
+          version="$(tr -d '[:space:]' < .python-version)"
+          test "$version" = "3.12.13" || {
+            echo "Release CI requires .python-version 3.12.13, found $version." >&2
+            exit 1
+          }
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ steps.python-version.outputs.version }}
+          cache: pip
+          cache-dependency-path: requirements.lock
+
+      - name: Install locked scientific environment
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements.lock
+          python -m pip check
+
+      - name: Confirm exact release runtime
+        shell: bash
+        run: |
+          expected="$(tr -d '[:space:]' < .python-version)"
+          actual="$(python -c 'import platform; print(platform.python_version())')"
+          test "$actual" = "$expected" || {
+            echo "Expected Python $expected, found $actual." >&2
+            exit 1
+          }
+
+      - name: Ruff lint and format check
+        run: make lint-python PYTHON=python
+
+      - name: mypy type check
+        run: make typecheck-python PYTHON=python
+
+      - name: Run Python tests
+        run: make test-python PYTHON=python
+
+      - name: Validate schema declarations
+        run: node schemas/validate-schemas.mjs
+
+      - name: Re-execute and checksum the sanitized notebook
+        run: make verify-notebook PYTHON=python
+
+      - name: Regenerate the offline deterministic plenoptic fixture
+        run: make verify-heavy-fixtures PYTHON=python
+
+      - name: Validate committed scientific evidence normally and optimized
+        run: make verify-scientific PYTHON=python
+
+      - name: Enforce tracked artifact policy
+        run: node .github/workflows/scripts/check-artifact-policy.mjs
+
+      - name: Explain externally gated regenerators
+        run: |
+          echo "The pinned NWB source is not downloaded in CI."
+          echo "CmdStan model and BridgeStan fixture regeneration require their reviewed compiled toolchains."
+          echo "Their committed outputs, checksums, diagnostics, source link, and manifests were validated above."
+
+      - name: Build web application against verified artifacts
+        run: |
+          npm ci
+          npm run build

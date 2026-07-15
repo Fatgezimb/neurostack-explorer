@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neurostack-explorer:schema:notebook-manifest:1",
+  "title": "NeuroStack Explorer notebook manifest",
+  "description": "Input, environment, execution, sanitization, and output record for a reproducible notebook.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "status",
+    "path",
+    "sha256",
+    "environmentLockSha256",
+    "kernel",
+    "inputs",
+    "execution",
+    "sanitization",
+    "outputs",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "status": { "enum": ["planned", "executed", "validated", "failed"] },
+    "path": { "type": "string", "minLength": 1 },
+    "sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "environmentLockSha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "kernel": { "type": ["string", "null"] },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reference", "sha256"],
+        "properties": {
+          "reference": { "type": "string", "minLength": 1 },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startedAt",
+        "completedAt",
+        "durationSeconds",
+        "command",
+        "cellCount",
+        "executedCellCount",
+        "errorCount",
+        "warnings"
+      ],
+      "properties": {
+        "startedAt": { "type": ["string", "null"], "format": "date-time" },
+        "completedAt": { "type": ["string", "null"], "format": "date-time" },
+        "durationSeconds": { "type": ["number", "null"], "minimum": 0 },
+        "command": { "type": ["string", "null"] },
+        "cellCount": { "type": ["integer", "null"], "minimum": 0 },
+        "executedCellCount": { "type": ["integer", "null"], "minimum": 0 },
+        "errorCount": { "type": ["integer", "null"], "minimum": 0 },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "sanitization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "checkedFor", "notes"],
+      "properties": {
+        "status": { "enum": ["pending", "passed", "failed"] },
+        "checkedFor": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "mediaType", "sha256", "purpose"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "mediaType": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "purpose": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": { "status": { "const": "validated" } },
+        "required": ["status"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "environmentLockSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "kernel": { "type": "string", "minLength": 1 },
+          "inputs": { "type": "array", "minItems": 1 },
+          "execution": {
+            "type": "object",
+            "properties": {
+              "startedAt": { "type": "string", "format": "date-time" },
+              "completedAt": { "type": "string", "format": "date-time" },
+              "durationSeconds": { "type": "number", "minimum": 0 },
+              "command": { "type": "string", "minLength": 1 },
+              "cellCount": { "type": "integer", "minimum": 1 },
+              "executedCellCount": { "type": "integer", "minimum": 1 },
+              "errorCount": { "const": 0 }
+            }
+          },
+          "sanitization": {
+            "type": "object",
+            "properties": {
+              "status": { "const": "passed" },
+              "checkedFor": { "type": "array", "minItems": 1 },
+              "notes": { "type": "string", "minLength": 1 }
+            }
+          },
+          "outputs": { "type": "array", "minItems": 1 }
+        }
+      }
+    }
+  ]
+}

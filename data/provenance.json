@@ -1,0 +1,131 @@
+{
+  "access": {
+    "accessMethod": "Existing pinned asset in the NeuroStack user cache; expected byte size and SHA-256 were re-verified before reading.",
+    "accessedAt": "2026-07-14T00:00:00Z",
+    "requiresAuthentication": false
+  },
+  "dataset": {
+    "authors": [
+      "Francesca Sargolini",
+      "Marianne Fyhn",
+      "Torkel Hafting",
+      "Bruce L. McNaughton",
+      "Menno P. Witter",
+      "May-Britt Moser",
+      "Edvard I. Moser",
+      "Haagen Waade",
+      "Simon Ball"
+    ],
+    "behavioralVariables": [
+      "x position",
+      "y position"
+    ],
+    "brainRegions": [
+      "Medial entorhinal cortex, layer II (MEC LII)"
+    ],
+    "persistentIdentifier": "10.48324/dandi.000582/0.251111.2151",
+    "persistentIdentifierUrl": "https://doi.org/10.48324/dandi.000582/0.251111.2151",
+    "recordingModalities": [
+      "Extracellular electrophysiology with sorted spike times, LFP, and two-dimensional LED position"
+    ],
+    "repository": "DANDI Archive",
+    "repositoryUrl": "https://dandiarchive.org/dandiset/000582/0.251111.2151",
+    "species": "Rattus norvegicus (Long Evans rat)",
+    "title": "Conjunctive Representation of Position, Direction, and Velocity in Entorhinal Cortex"
+  },
+  "derivatives": [
+    {
+      "artifactId": "demo-dataset",
+      "generatedAt": "2026-07-14T00:00:00Z",
+      "generatedBy": "python/neurostack_explorer/artifacts.py",
+      "isSynthetic": false,
+      "path": "public/artifacts/v1/demo-dataset.json",
+      "sha256": "e56d1ded0dad948c2d3ddb82fc23b3ed2f1280dfc6f341c538ecf06a0c307e64",
+      "sourceAssetSha256": "43b3b435b953d22e276acc494af2926b63deaf15d2834531b2a87d08a8458a09",
+      "transformations": [
+        "Applied the NWB SpatialSeries conversion (0.01) and offset (0.0) exactly once to obtain meters.",
+        "Selected every fifth 50 Hz position sample, without interpolation, to form a 10 Hz derivative spanning the full 600 seconds.",
+        "Retained every spike time for all eight reviewed unit IDs and rounded serialized values to six decimal places.",
+        "Binned spikes into fixed left-closed/right-open 100 ms bins; the final bin includes the 600-second right edge by NumPy histogram convention.",
+        "Derived speed magnitude from sample-centered finite differences of 10 Hz x/y positions (one-sided at endpoints), with no smoothing; linearly interpolated speed at each spike time for tuning.",
+        "Computed occupancy-aware speed tuning for t1c1, an ISI histogram for t1c1, and an event-pair lag histogram for t1c1 versus t2c1.",
+        "Computed a descriptive unit feature map from mean rate and ISI coefficient of variation; it is not a learned embedding."
+      ]
+    },
+    {
+      "artifactId": "synthetic-dataset",
+      "generatedAt": "2026-07-14T00:00:00Z",
+      "generatedBy": "python/neurostack_explorer/artifacts.py",
+      "isSynthetic": true,
+      "path": "public/artifacts/v1/synthetic-dataset.json",
+      "sha256": "ad63cff4be0401f28a53f215a414edf5df5f311ac66f4260306a915d46deda49",
+      "sourceAssetSha256": null,
+      "transformations": [
+        "Generated 1200 position samples and four modulated synthetic spike trains with Python random seed 20260714.",
+        "Kept synthetic identifiers and disclosures separate from DANDI metadata.",
+        "Applied the same descriptive derivative calculations as the public artifact."
+      ]
+    },
+    {
+      "artifactId": "model-results",
+      "generatedAt": "2026-07-14T00:00:00Z",
+      "generatedBy": "scripts/run_models.py",
+      "isSynthetic": false,
+      "path": "public/artifacts/v1/model-results.json",
+      "sha256": "f52bb8738cd375a47aaa56dd4601f1f39d78f35fb10425ca4821d05869b57371",
+      "sourceAssetSha256": "43b3b435b953d22e276acc494af2926b63deaf15d2834531b2a87d08a8458a09",
+      "transformations": [
+        "Used current-bin x, y, trailing-only speed, and current t1c1 count to predict t1c1 spike count in the next 100 ms bin.",
+        "Fit preprocessing statistics on the chronological training block only.",
+        "Froze a 600-row validation block used only for PyTorch early stopping; the final test remained untouched.",
+        "Reserved a 30-second temporal gap before the final 1,499-row held-out block.",
+        "Actually fit NeMoS, scikit-learn, PyTorch, and CmdStan outputs with pinned software and seed 20260714."
+      ]
+    }
+  ],
+  "license": {
+    "name": "Creative Commons Attribution 4.0 International",
+    "redistributionNotes": "The source and derivative may be shared under CC BY 4.0 with attribution, a license link, and disclosure of transformations.",
+    "spdxId": "CC-BY-4.0",
+    "status": "verified",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "notes": [
+    "DANDI dataset API: https://api.dandiarchive.org/api/dandisets/000582/versions/0.251111.2151/",
+    "DANDI asset API: https://api.dandiarchive.org/api/assets/2b9e441b-56bc-4be2-893e-0e02d22d239d/",
+    "Stable DANDI URI: dandi://dandi/000582@0.251111.2151/sub-10073/sub-10073_ses-17010302_behavior+ecephys.nwb",
+    "Source paper: https://doi.org/10.1126/science.1125572",
+    "NWB identifier 294b7de1-a624-44d8-b1a1-28028dd2cf0c; source position samples 30000; electrode table rows 1; available LFP rate 250 Hz.",
+    "Selected unit spike counts: t1c1=1759, t2c1=901, t2c3=1547, t3c1=679, t3c2=776, t3c3=815, t3c4=1731, t4c1=879.",
+    "NWB Inspector flags source subject weight '0.35/0.45' as ambiguous; the field is excluded from the derivative.",
+    "The source session_start_time is 1900-01-01 and is treated as a placeholder, not an acquisition date.",
+    "The Units table does not declare spike-time resolution; timing precision is not inferred beyond stored values.",
+    "Only SpatialSeriesLED1 is selected. Head direction and a second LED are not claimed in this derivative.",
+    "The immutable NWB source remains in a user cache and is neither committed to Git nor served to site visitors.",
+    "NeMoS/JAX, scikit-learn, PyTorch, and CmdStan outputs are precomputed from one selected unit and one fixed split; they are demonstrations, not population benchmarks or causal evidence.",
+    "Environment target Python 3.12; verification runtime Python 3.12.13; NumPy 2.3.3; h5py 3.15.1; PyNWB 3.1.3; NWB Inspector 0.7.2.",
+    "Executed model lane: Pynapple 0.11.3; NeMoS 0.2.9; JAX 0.10.1; scikit-learn 1.9.0; PyTorch 2.12.1; CmdStanPy 1.3.0 with externally compiled CmdStan 2.39.0. Separate interface/model fixtures use BridgeStan 2.9.0 and plenoptic 2.0.1.",
+    "Generator SHA-256 4e87b74d3fe62023041582d1ad01fa874360c326d502059aa2d94258b98db3ec; requirements.lock SHA-256 dd78ec19d6561eac0fa4d15dd9c050df7d2aae207af08859d8824f2a4e14b4cc; pyproject.toml SHA-256 b42858ad3191463131a48c390f1d519bd9f1a5a1a2a272da89551d23e2294597.",
+    "Notebook be764562f28d3a340893ed93e5f4992804016a1d1af0e9934b05398204a10dbd is executed and recorded separately in notebook-manifest.json.",
+    "No Git commit exists yet; regenerate provenance after the reviewed release commit."
+  ],
+  "privacyReview": {
+    "notes": "Public rat electrophysiology asset; no human, patient, clinical, or directly identifying data are selected. Subject demographics and ambiguous source weight are excluded; the public archive asset path remains only for chain-of-custody provenance.",
+    "reviewedAt": "2026-07-14T00:00:00Z",
+    "reviewer": "Codex source and privacy audit",
+    "status": "passed"
+  },
+  "schemaVersion": "1.0.0",
+  "selectedAssets": [
+    {
+      "assetId": "2b9e441b-56bc-4be2-893e-0e02d22d239d",
+      "byteSize": 15657857,
+      "exactSelection": "sub-10073/sub-10073_ses-17010302_behavior+ecephys.nwb; /processing/behavior/Position/SpatialSeriesLED1; full 0–600 s support; units t1c1, t2c1, t2c3, t3c1, t3c2, t3c3, t3c4, t4c1",
+      "mediaType": "application/x-nwb",
+      "nwbVersion": "2.6.0",
+      "sha256": "43b3b435b953d22e276acc494af2926b63deaf15d2834531b2a87d08a8458a09",
+      "sourceUrl": "https://api.dandiarchive.org/api/assets/2b9e441b-56bc-4be2-893e-0e02d22d239d/download/"
+    }
+  ],
+  "status": "verified"
+}

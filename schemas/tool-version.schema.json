@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:neurostack-explorer:schema:tool-version:1",
+  "title": "NeuroStack Explorer tool version ledger",
+  "description": "Audited software source, version, license, and artifact dependency ledger.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "auditStatus", "generatedAt", "tools", "notes"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "auditStatus": { "enum": ["pending", "verified"] },
+    "generatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "role",
+          "packageName",
+          "exactVersion",
+          "commit",
+          "sourceUrl",
+          "documentationUrl",
+          "license",
+          "licenseUrl",
+          "auditStatus",
+          "auditedAt",
+          "artifacts",
+          "notes"
+        ],
+        "properties": {
+          "name": {
+            "enum": [
+              "Python",
+              "JupyterLab",
+              "NWB",
+              "PyNWB",
+              "Pynapple",
+              "NeMoS",
+              "plenoptic",
+              "Stan",
+              "BridgeStan",
+              "Figurl",
+              "PyTorch",
+              "scikit-learn",
+              "Plotly",
+              "Next.js",
+              "Other"
+            ]
+          },
+          "role": { "type": "string", "minLength": 1 },
+          "packageName": { "type": ["string", "null"] },
+          "exactVersion": { "type": ["string", "null"] },
+          "commit": { "type": ["string", "null"] },
+          "sourceUrl": { "type": ["string", "null"], "format": "uri" },
+          "documentationUrl": { "type": ["string", "null"], "format": "uri" },
+          "license": { "type": ["string", "null"] },
+          "licenseUrl": { "type": ["string", "null"], "format": "uri" },
+          "auditStatus": { "enum": ["pending", "verified", "rejected"] },
+          "auditedAt": { "type": ["string", "null"], "format": "date-time" },
+          "artifacts": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "uniqueItems": true
+          },
+          "notes": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "type": "object",
+              "properties": { "auditStatus": { "const": "verified" } },
+              "required": ["auditStatus"]
+            },
+            "then": {
+              "type": "object",
+              "properties": {
+                "exactVersion": { "type": "string", "minLength": 1 },
+                "sourceUrl": { "type": "string", "format": "uri" },
+                "documentationUrl": { "type": "string", "format": "uri" },
+                "license": { "type": "string", "minLength": 1 },
+                "licenseUrl": { "type": "string", "format": "uri" },
+                "auditedAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "properties": { "auditStatus": { "const": "verified" } },
+        "required": ["auditStatus"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "generatedAt": { "type": "string", "format": "date-time" },
+          "tools": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "auditStatus": { "const": "verified" }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

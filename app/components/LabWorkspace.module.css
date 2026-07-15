@@ -1,0 +1,417 @@
+.lab {
+  width: min(calc(100% - 1.2rem), 1680px);
+  margin-inline: auto;
+  padding-block: 2rem 5rem;
+}
+
+.labHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) auto;
+  gap: 2rem;
+  padding: clamp(1rem, 3vw, 2rem) 0 2rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.labHeader h1 {
+  max-width: 15ch;
+  font-size: clamp(2.7rem, 6vw, 6.2rem);
+}
+
+.labHeader p {
+  max-width: 72ch;
+  color: var(--ink-soft);
+}
+
+.labStatus {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(14.5rem, 0.72fr) minmax(32rem, 2.3fr) minmax(17rem, 0.9fr);
+  align-items: start;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.controls,
+.inspector {
+  position: sticky;
+  top: 5.25rem;
+  max-height: calc(100vh - 5.8rem);
+  padding: 1rem;
+  overflow: auto;
+  background: color-mix(in srgb, var(--paper) 93%, transparent);
+}
+
+.controls {
+  border-right: 1px solid var(--line);
+}
+
+.inspector {
+  border-left: 1px solid var(--line);
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.panelHead span {
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+}
+
+.panelHead h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: -0.025em;
+}
+
+.controls > label,
+.controls fieldset,
+.checks {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  border: 0;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.controls legend {
+  margin-bottom: 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
+.controls select,
+.controls input[type="number"] {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper-raised);
+}
+
+.controls input[type="range"] {
+  width: 100%;
+  accent-color: var(--teal);
+}
+
+.checks label {
+  min-height: 2.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.checks input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--teal);
+}
+
+.shareStatus {
+  min-height: 2.4rem;
+  color: var(--ink-muted);
+  font-size: 0.7rem;
+}
+
+.visuals {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.mobileSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  margin-bottom: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink-muted);
+  font-size: 0.75rem;
+}
+
+.mobileSummary strong {
+  color: var(--ink);
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.chartCard {
+  min-width: 0;
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-raised);
+}
+
+.wideChart {
+  grid-column: 1 / -1;
+}
+
+.chartHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+
+.chartHead h3 {
+  margin: 0;
+  font-size: 0.96rem;
+}
+
+.chartHead span {
+  color: var(--ink-muted);
+  font-size: 0.61rem;
+}
+
+.chartSvg,
+.raster,
+.heatmap {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--line);
+  background: var(--paper-inset);
+}
+
+.chartSvg {
+  aspect-ratio: 2.75;
+}
+
+.raster {
+  height: 15rem;
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+
+.heatmap {
+  height: 8.8rem;
+}
+
+.axis {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.zero {
+  stroke: var(--line-strong);
+  stroke-dasharray: 3 3;
+}
+
+.axisLabel,
+.tick {
+  fill: var(--ink-muted);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.axisLabel {
+  font-size: 8px;
+  text-anchor: middle;
+}
+
+.tick {
+  font-size: 7px;
+}
+
+.chartCard :global(.button-quiet) {
+  min-height: 2rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.68rem;
+}
+
+.chartCard :global(.button-quiet) + p {
+  margin: 0.65rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+}
+
+.interactionHint {
+  margin: 0.45rem 0 0.6rem;
+  color: var(--ink-muted);
+  font-size: 0.69rem;
+}
+
+.splitTimeline {
+  min-height: 7rem;
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.splitTimeline li {
+  min-width: 4.5rem;
+  display: grid;
+  align-content: center;
+  gap: 0.25rem;
+  padding: 0.65rem;
+  border: 1px solid var(--line);
+  background: repeating-linear-gradient(135deg, var(--paper-inset) 0 8px, var(--teal-wash) 8px 14px);
+}
+
+.splitTimeline li:nth-child(2) { background: repeating-linear-gradient(45deg, var(--paper-inset) 0 7px, var(--violet-wash) 7px 13px); }
+.splitTimeline li:nth-child(3) { background: repeating-linear-gradient(90deg, var(--paper-inset) 0 6px, var(--amber-wash) 6px 10px); }
+.splitTimeline li:nth-child(4) { background: repeating-linear-gradient(135deg, var(--paper-inset) 0 5px, var(--blue-wash) 5px 11px); }
+
+.splitTimeline span,
+.splitTimeline small {
+  color: var(--ink-muted);
+  font-size: 0.65rem;
+}
+
+.inspector > p,
+.inspector li {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+}
+
+.inspector pre {
+  padding: 0.75rem;
+  font-size: 0.68rem;
+}
+
+.readouts,
+.provenance {
+  margin: 1rem 0;
+}
+
+.readouts div,
+.provenance div {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.readouts dt,
+.provenance dt {
+  color: var(--ink-muted);
+  font: 650 0.62rem/1.3 var(--font-geist-mono), monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.readouts dd,
+.provenance dd {
+  margin: 0.18rem 0 0;
+  overflow-wrap: anywhere;
+  font-size: 0.76rem;
+}
+
+.researchDetails {
+  margin-block: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.researchDetails h3 {
+  font-size: 1rem;
+}
+
+.bottomPanel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  gap: 1.25rem 2rem;
+  padding: 2rem 0;
+}
+
+.bottomPanel > div:first-child p:not(.eyebrow) {
+  color: var(--ink-soft);
+}
+
+.provenance {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1rem;
+}
+
+.bottomPanel :global(.button-row) {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+@media (max-width: 1260px) {
+  .workspace {
+    grid-template-columns: minmax(13rem, 0.65fr) minmax(30rem, 2fr);
+  }
+
+  .inspector {
+    position: static;
+    grid-column: 1 / -1;
+    max-height: none;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 820px) {
+  .lab {
+    width: min(calc(100% - 0.8rem), 1680px);
+  }
+
+  .labHeader,
+  .workspace,
+  .bottomPanel {
+    grid-template-columns: 1fr;
+  }
+
+  .labStatus {
+    justify-content: flex-start;
+  }
+
+  .controls {
+    position: static;
+    max-height: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .controls .panelHead,
+  .controls :global(.button-row),
+  .controls .shareStatus {
+    grid-column: 1 / -1;
+  }
+
+  .visuals {
+    padding: 0.65rem 0;
+  }
+
+  .provenance {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .controls,
+  .chartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .raster {
+    height: 13rem;
+  }
+}
