@@ -2,7 +2,7 @@
 
 ## Supported environments
 
-- Node.js `>=22.13.0` with the committed npm lockfile;
+- Node.js `>=24.0.0` with the committed npm lockfile;
 - Python `>=3.12,<3.13` with `requirements.lock`;
 - CmdStan 2.39.0 and the BridgeStan C++ source/toolchain when regenerating
   compiled Stan artifacts.

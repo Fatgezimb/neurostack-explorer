@@ -189,3 +189,9 @@ source by immutable asset/checksum, and verifies its SHA before execution. This
 repairs the former clean-run failure that expected an absent local cache. Model
 refits remain externally gated; scientific result artifacts are not changed by
 this hosting repair.
+
+Web CI and deployment use Node24, matching the current Cloudflare/Vite runtime's
+`node:module.registerHooks` requirement. The old22.13 CI pin could install the
+lock but could not import the build adapter. No package version was upgraded
+for this correction; only two previously missing optional lock entries and the
+supported Node runtime declaration changed.

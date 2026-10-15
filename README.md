@@ -131,7 +131,7 @@ out-of-session evaluation are not.
 
 ## Local setup
 
-Requirements are Node.js `>=22.13.0`, Python `3.12.x`, npm, the committed Node
+Requirements are Node.js `>=24.0.0`, Python `3.12.x`, npm, the committed Node
 lockfile, and the committed Python lock.
 
 ```bash
