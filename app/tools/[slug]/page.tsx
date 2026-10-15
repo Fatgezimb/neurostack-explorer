@@ -1,5 +1,6 @@
+import { sitePath } from "../../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../../lib/Link";
 import { notFound } from "next/navigation";
 import { getTool, tools } from "@/app/content/tools";
 import { sourceRegistry } from "@/app/content/sources";
@@ -39,7 +40,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const nextTool = tool.nextTool ? getTool(tool.nextTool) : null;
 
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">{tool.category} / technology module</p>
         <h1>{tool.name}</h1>
@@ -52,7 +53,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
         <div className="button-row">
           <a href="#signature-visual">Inspect the demonstration</a>
           <Link href={`/sources#${tool.sourceId}`}>Review source status</Link>
-          <Link href="/tools">All tools</Link>
+          <Link href={sitePath("/tools")}>All tools</Link>
         </div>
       </header>
 
@@ -165,7 +166,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
           {previousTool ? (
             <Link href={`/tools/${previousTool.slug}`}>Previous: {previousTool.name}</Link>
           ) : (
-            <Link href="/tools">Back to all tools</Link>
+            <Link href={sitePath("/tools")}>Back to all tools</Link>
           )}
           {nextTool && (
             <Link href={`/tools/${nextTool.slug}`}>Next: {nextTool.name}</Link>

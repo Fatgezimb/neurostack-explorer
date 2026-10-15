@@ -1,5 +1,6 @@
+import { sitePath } from "../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../lib/Link";
 import {
   alignedModelRuns,
   artifactManifest,
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function MethodsPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Methods</p>
         <h1>An evidence chain from public source to browser view.</h1>
@@ -26,9 +27,9 @@ export default function MethodsPage() {
           with it.
         </p>
         <div className="button-row">
-          <Link href="/sources">Inspect source status</Link>
-          <Link href="/notebooks">Inspect the notebook contract</Link>
-          <Link href="/limitations">Read the limitations</Link>
+          <Link href={sitePath("/sources")}>Inspect source status</Link>
+          <Link href={sitePath("/notebooks")}>Inspect the notebook contract</Link>
+          <Link href={sitePath("/limitations")}>Read the limitations</Link>
         </div>
       </header>
 

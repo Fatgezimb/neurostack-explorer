@@ -2,8 +2,10 @@ import vinext from "vinext";
 import { defineConfig } from "vite";
 import hostingConfig from "./.openai/hosting.json";
 import { sites } from "./build/sites-vite-plugin";
+import { createPagesAdapters } from "./build/pages-vite-adapters.mjs";
 
 const { r2 } = hostingConfig;
+const pagesBasePath = (process.env.PAGES_BASE_PATH ?? "").replace(/\/+$/, "");
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
@@ -33,11 +35,13 @@ export default defineConfig(async () => {
   const { cloudflare } = await import("@cloudflare/vite-plugin");
 
   return {
+    define: { "process.env.NEXT_PUBLIC_NEUROSTACK_BASE_PATH": JSON.stringify(pagesBasePath) },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
     plugins: [
       vinext(),
+      ...createPagesAdapters(pagesBasePath),
       sites(),
       cloudflare({
         viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },

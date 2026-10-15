@@ -131,7 +131,7 @@ out-of-session evaluation are not.
 
 ## Local setup
 
-Requirements are Node.js `>=22.13.0`, Python `3.12.x`, npm, the committed Node
+Requirements are Node.js `>=24.0.0`, Python `3.12.x`, npm, the committed Node
 lockfile, and the committed Python lock.
 
 ```bash
@@ -161,3 +161,13 @@ verification. The immutable source NWB remains outside Git.
 Project code and project-authored documentation are MIT licensed, copyright
 2026 Fatgezim Bela. The DANDI source and public-derived data remain under CC BY
 4.0. Third-party software retains its own license.
+
+
+### GitHub Pages
+
+Public release: [NeuroStack Explorer](https://fatgezimb.github.io/neurostack-explorer/).
+Pages builds set `PAGES_BASE_PATH=/neurostack-explorer` during build **and**
+rendering; the exporter validates all 24 routes and their static resources.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for commands and browser release checks.
+Root-mode `npm run dev` remains supported. `npm run test:pages` protects the
+static bootstrap, fonts, route payloads, history adapter and resource audit.

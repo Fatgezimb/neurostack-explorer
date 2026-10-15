@@ -3,12 +3,17 @@
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 import nbformat as nbf
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "neurostack_explorer.ipynb"
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument(
+    "--output", type=Path, default=REPO_ROOT / "notebooks" / "neurostack_explorer.ipynb"
+)
+NOTEBOOK_PATH = parser.parse_args().output
 
 
 def markdown(text: str):

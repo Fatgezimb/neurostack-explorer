@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import importlib.metadata
 import sys
@@ -33,6 +34,11 @@ def rounded_image(values: np.ndarray) -> list[list[float]]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output-dir", type=Path, default=REPO_ROOT / "public/artifacts/v1"
+    )
+    output_dir = parser.parse_args().output_dir
     import plenoptic as po  # type: ignore[import-untyped]
     import torch
     from PIL import Image
@@ -98,7 +104,7 @@ def main() -> int:
     if not losses[-1] < losses[0]:
         raise RuntimeError("plenoptic synthesis did not reduce the model loss.")
 
-    artifact_dir = REPO_ROOT / "public" / "artifacts" / "v1"
+    artifact_dir = output_dir
     artifact_dir.mkdir(parents=True, exist_ok=True)
 
     def save_grayscale(

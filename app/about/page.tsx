@@ -1,5 +1,6 @@
+import { sitePath } from "../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../lib/Link";
 
 export const metadata: Metadata = {
   title: "About",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">About the project</p>
         <h1>Built by Fatgezim “Zim” Bela.</h1>
@@ -19,9 +20,9 @@ export default function AboutPage() {
           and scientific visualization.
         </p>
         <div className="button-row">
-          <Link href="/tools">Explore the technology stack</Link>
-          <Link href="/methods">Read the methods</Link>
-          <Link href="/sources">Inspect the sources</Link>
+          <Link href={sitePath("/tools")}>Explore the technology stack</Link>
+          <Link href={sitePath("/methods")}>Read the methods</Link>
+          <Link href={sitePath("/sources")}>Inspect the sources</Link>
         </div>
       </header>
 
@@ -81,8 +82,8 @@ export default function AboutPage() {
           research platform, or published study.
         </p>
         <div className="button-row">
-          <Link href="/limitations">Read every limitation</Link>
-          <Link href="/notebooks">Inspect reproducibility</Link>
+          <Link href={sitePath("/limitations")}>Read every limitation</Link>
+          <Link href={sitePath("/notebooks")}>Inspect reproducibility</Link>
         </div>
       </section>
     </main>

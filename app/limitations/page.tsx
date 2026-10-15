@@ -1,5 +1,6 @@
+import { sitePath } from "../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../lib/Link";
 import { limitationGroups, unresolvedEvidence } from "@/app/content/limitations";
 
 export const metadata: Metadata = {
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function LimitationsPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Limitations</p>
         <h1>What this demonstration cannot establish.</h1>
@@ -21,9 +22,9 @@ export default function LimitationsPage() {
           claim because evidence is not yet available.
         </p>
         <div className="button-row">
-          <Link href="/methods">Read the safeguards</Link>
-          <Link href="/sources">Inspect source status</Link>
-          <Link href="/about">About the project</Link>
+          <Link href={sitePath("/methods")}>Read the safeguards</Link>
+          <Link href={sitePath("/sources")}>Inspect source status</Link>
+          <Link href={sitePath("/about")}>About the project</Link>
         </div>
       </header>
 

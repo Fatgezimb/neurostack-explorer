@@ -1,5 +1,7 @@
 "use client";
 
+import { sitePath } from "../../lib/paths";
+
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import type { ToolSlug } from "../../lib/contracts";
@@ -114,7 +116,7 @@ function useArtifact<T>(path: string) {
   const [artifact, setArtifact] = useState<T | null | false>(null);
   useEffect(() => {
     const controller = new AbortController();
-    fetch(path, { cache: "force-cache", signal: controller.signal })
+    fetch(sitePath(path), { cache: "force-cache", signal: controller.signal })
       .then((response) => response.ok ? response.json() as Promise<T> : Promise.reject(new Error(`Artifact request failed: ${response.status}`)))
       .then(setArtifact)
       .catch((error: unknown) => {
@@ -160,7 +162,7 @@ function NotebookVisual() {
         <p className="eyebrow">Section {cell + 1} of 15 / executed in order</p>
         <h3>{notebookCells[cell][1]}</h3>
         {notebookCells[cell][0] === "Code" ? <pre aria-label="Notebook code preview" tabIndex={0}><code>{notebookCodePreviews[cell]}</code></pre> : <p>Each notebook section keeps its input artifact, version, execution status, and expected output beside the interpretation.</p>}
-        <a className="button-secondary" href="/notebooks">Open read-only notebook preview</a>
+        <a className="button-secondary" href={sitePath("/notebooks")}>Open read-only notebook preview</a>
       </article>
     </div>
   );
@@ -312,9 +314,9 @@ function PlenopticVisual() {
       <label className={styles.rangeLabel}>Recorded checkpoint: iteration {active.iteration}, representation loss {active.loss.toExponential(3)} <input max={checkpoints.length - 1} min="0" onChange={(event) => setCheckpoint(Number(event.target.value))} type="range" value={checkpoint} /></label>
       <div className={styles.visualControls}><span className="mono">Computed progress frame {checkpoint + 1}/{checkpoints.length}</span><div><button aria-pressed={differenceMode === "pixel"} onClick={() => setDifferenceMode("pixel")} type="button">Pixel difference</button><button aria-pressed={differenceMode === "representation"} onClick={() => setDifferenceMode("representation")} type="button">Representation difference</button></div></div>
       <div className={styles.imageCompare}>
-        <figure><Image alt="Deterministic procedural grayscale source image used by the plenoptic demonstration." height={240} src="/artifacts/v1/plenoptic-source.png" width={240} /><figcaption>Procedural source</figcaption></figure>
-        <figure><Image alt={`Precomputed plenoptic synthesis progress frame at iteration ${active.iteration}.`} height={240} src={checkpointSource} width={240} /><figcaption>Synthesis · iteration {active.iteration}</figcaption></figure>
-        <figure><Image alt={differenceMode === "pixel" ? "Signed pixel difference between the procedural source and final synthesis, display-scaled around mid-gray." : "Signed Gaussian-model representation difference between the procedural source and final synthesis, display-scaled around mid-gray."} height={240} src={differenceSource} width={240} /><figcaption>Display-scaled {differenceMode} difference</figcaption></figure>
+        <figure><Image unoptimized alt="Deterministic procedural grayscale source image used by the plenoptic demonstration." height={240} src={sitePath("/artifacts/v1/plenoptic-source.png")} width={240} /><figcaption>Procedural source</figcaption></figure>
+        <figure><Image unoptimized alt={`Precomputed plenoptic synthesis progress frame at iteration ${active.iteration}.`} height={240} src={sitePath(checkpointSource)} width={240} /><figcaption>Synthesis · iteration {active.iteration}</figcaption></figure>
+        <figure><Image unoptimized alt={differenceMode === "pixel" ? "Signed pixel difference between the procedural source and final synthesis, display-scaled around mid-gray." : "Signed Gaussian-model representation difference between the procedural source and final synthesis, display-scaled around mid-gray."} height={240} src={sitePath(differenceSource)} width={240} /><figcaption>Display-scaled {differenceMode} difference</figcaption></figure>
       </div>
       <svg aria-label={`Recorded plenoptic optimization history from iteration zero loss ${checkpoints[0].loss.toExponential(3)} to iteration ${checkpoints.at(-1)?.iteration} loss ${checkpoints.at(-1)?.loss.toExponential(3)}. Selected iteration ${active.iteration}, loss ${active.loss.toExponential(3)}.`} className={styles.signatureSvg} role="img" viewBox="0 0 440 140"><path d={sparkPath(logLoss, 420, 112)} fill="none" stroke="var(--violet)" strokeWidth="2.5" /><circle cx={checkpointX} cy={checkpointY} fill="var(--amber)" r="6" /><text className={styles.svgLabel} x="24" y="130">log10 representation loss · selected iteration {active.iteration}</text></svg>
       <details><summary>Inspect every recorded optimization checkpoint</summary><TableScroll label="Scrollable plenoptic optimization checkpoints"><table><caption>Deterministic plenoptic Metamer representation loss.</caption><thead><tr><th scope="col">Iteration</th><th scope="col">Representation loss</th></tr></thead><tbody>{checkpoints.map((entry) => <tr key={entry.iteration}><th scope="row">{entry.iteration}</th><td>{entry.loss.toExponential(6)}</td></tr>)}</tbody></table></TableScroll></details>

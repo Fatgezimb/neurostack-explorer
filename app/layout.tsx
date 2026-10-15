@@ -26,7 +26,10 @@ const themeInitialization = `(() => {
   }
 })();`;
 
+const publicUrl = "https://fatgezimb.github.io/neurostack-explorer/";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(publicUrl),
   title: {
     default: "NeuroStack Explorer",
     template: "%s | NeuroStack Explorer",
@@ -44,7 +47,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/neurostack-og.png",
+        url: `${publicUrl}neurostack-og.png`,
         width: 1731,
         height: 908,
         alt: "Illustrative neural spike raster linked to tuning, trace, and population-embedding views.",
@@ -55,11 +58,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "NeuroStack Explorer",
     description: "Open neural data, made inspectable.",
-    images: ["/neurostack-og.png"],
+    images: [`${publicUrl}neurostack-og.png`],
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: `${publicUrl}favicon.svg`,
+    shortcut: `${publicUrl}favicon.svg`,
   },
 };
 

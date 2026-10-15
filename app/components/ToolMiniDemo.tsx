@@ -1,5 +1,7 @@
 "use client";
 
+import { sitePath } from "../../lib/paths";
+
 import { useState } from "react";
 import styles from "./ToolMiniDemo.module.css";
 
@@ -136,7 +138,7 @@ function PlenopticDemo({ step }: { step: number }) {
     <div className={styles.imageDemo}>
       {images.map(([src, label], index) => (
         <div className={styles.imageFrame} data-active={index === step} key={src}>
-          <i className={styles.imagePixels} style={{ backgroundImage: `url(${src})` }} />
+          <i className={styles.imagePixels} style={{ backgroundImage: `url(${sitePath(src)})` }} />
           <span>{label}</span>
         </div>
       ))}

@@ -1,6 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { sitePath } from "../../lib/paths";
+
+import Link from "../../lib/Link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const primaryLinks = [
@@ -122,7 +124,7 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link className="brand" href="/">
+        <Link className="brand" href={sitePath("/")}>
           <span aria-hidden="true" className="brand-mark">NS</span>
           <span>
             NeuroStack Explorer

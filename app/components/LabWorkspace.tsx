@@ -1,5 +1,7 @@
 "use client";
 
+import { sitePath } from "../../lib/paths";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DemoDataset } from "../../lib/labData";
 import { createSyntheticFallback, loadDemoDataset } from "../../lib/labData";
@@ -653,7 +655,7 @@ train, validation, gap, test = blocked_time_split(features)
 
 model.fit(train.X, train.y)
 prediction = model.predict(test.X)`}</code></pre>
-          <a className="button-secondary" href={`/tools/${model === "sklearn" ? "scikit-learn" : model}`}>Open model module</a>
+          <a className="button-secondary" href={sitePath(`/tools/${model === "sklearn" ? "scikit-learn" : model}`)}>Open model module</a>
         </aside>
       </div>
 
@@ -671,7 +673,7 @@ prediction = model.predict(test.X)`}</code></pre>
           <div><dt>Origin</dt><dd>{dataset.metadata.origin}</dd></div>
           <div><dt>Browser work</dt><dd>filtering · smoothing · linked selection</dd></div>
         </dl>
-        <div className="button-row"><a className="button-secondary" href="/data">View full provenance</a><a className="button-quiet" href="/methods">Read transformations</a></div>
+        <div className="button-row"><a className="button-secondary" href={sitePath("/data")}>View full provenance</a><a className="button-quiet" href={sitePath("/methods")}>Read transformations</a></div>
       </section>
     </div>
   );

@@ -16,6 +16,8 @@ concurrency:
 
 jobs:
   deploy:
+    env:
+      PAGES_BASE_PATH: /neurostack-explorer
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -24,11 +26,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: npm
-      - run: npm install --no-audit --fund=false
+      - run: npm ci --no-audit --fund=false
       - run: npm run lint && npm run typecheck && npm test
-      - run: npm run build
+      - run: npm run test:pages
       - run: npm run start -- --port 4173 > /tmp/neurostack-server.log 2>&1 &
       - run: npx --yes wait-on http://127.0.0.1:4173
       - run: node scripts/export-pages.mjs

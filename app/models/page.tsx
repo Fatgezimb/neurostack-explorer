@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ModelsPage() {
-  return <main id="main-content"><ModelComparison /></main>;
+  return <main id="main-content" tabIndex={-1}><ModelComparison /></main>;
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { sitePath } from "../../lib/paths";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { DemoDataset } from "../../lib/labData";
 import { createSyntheticFallback, loadDemoDataset } from "../../lib/labData";
@@ -343,9 +345,9 @@ export function ScientificFigureViewer() {
           </dl>
           <button className="button" onClick={async () => { try { await navigator.clipboard.writeText(window.location.href); setShareStatus("View link copied."); } catch { setShareStatus("Copy unavailable; use the address bar."); } }} type="button">Copy persistent view link</button>
           <p aria-live="polite" className="fine-print">{shareStatus}</p>
-          <a className="button-secondary" href="/sources">View source registry</a>
-          <a className="button-quiet" href="/methods#models-heading">View analysis method</a>
-          <a className="button-quiet" href="/notebooks#notebook-preview">Inspect executed code</a>
+          <a className="button-secondary" href={sitePath("/sources")}>View source registry</a>
+          <a className="button-quiet" href={sitePath("/methods#models-heading")}>View analysis method</a>
+          <a className="button-quiet" href={sitePath("/notebooks#notebook-preview")}>Inspect executed code</a>
         </aside>
       </section>
 

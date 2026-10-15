@@ -1,3 +1,4 @@
+import { sitePath } from "../lib/paths";
 import type { Metadata } from "next";
 import { HeroSnapshot } from "./components/HeroSnapshot";
 import { ToolMiniDemo } from "./components/ToolMiniDemo";
@@ -50,7 +51,7 @@ const toolStatuses: Record<(typeof tools)[number]["slug"], { label: string; tone
 
 export default function Home() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <section className={`${styles.hero} section-shell`}>
         <div className={styles.heroCopy}>
           <p className="eyebrow">NeuroStack Explorer / technical demonstration</p>
@@ -60,9 +61,9 @@ export default function Home() {
             statistical models, machine-learning predictions, and interactive scientific visualizations.
           </p>
           <div className="button-row">
-            <a className="button" href="/lab">Open the analysis workspace <span aria-hidden="true">→</span></a>
-            <a className="button-secondary" href="/pipeline">Explore the complete pipeline</a>
-            <a className="button-quiet" href="/notebooks">Open the research notebook</a>
+            <a className="button" href={sitePath("/lab")}>Open the analysis workspace <span aria-hidden="true">→</span></a>
+            <a className="button-secondary" href={sitePath("/pipeline")}>Explore the complete pipeline</a>
+            <a className="button-quiet" href={sitePath("/notebooks")}>Open the research notebook</a>
           </div>
           <p className={`${styles.disclaimer} notice`}>
             <strong>Scope:</strong> Built by Fatgezim “Zim” Bela using public and clearly labeled synthetic data.
@@ -92,8 +93,8 @@ export default function Home() {
           ))}
         </ol>
         <div className="button-row">
-          <a className="button-secondary" href="/pipeline">Inspect inputs, outputs, code, and limitations</a>
-          <a className="button-quiet" href="/data">View dataset provenance</a>
+          <a className="button-secondary" href={sitePath("/pipeline")}>Inspect inputs, outputs, code, and limitations</a>
+          <a className="button-quiet" href={sitePath("/data")}>View dataset provenance</a>
         </div>
       </section>
 
@@ -119,7 +120,7 @@ export default function Home() {
               <h3>{tool.name}</h3>
               <p>{tool.role}</p>
               <ToolMiniDemo kind={tool.visual} label={`${tool.name} miniature demonstration`} seed={index + 1} />
-              <a className={styles.cardLink} href={`/tools/${tool.slug}`}>
+              <a className={styles.cardLink} href={sitePath(`/tools/${tool.slug}`)}>
                 Open {tool.name} module <span aria-hidden="true">→</span>
               </a>
             </article>
@@ -135,9 +136,9 @@ export default function Home() {
           synthetic fallback when the archive is unavailable.
         </p>
         <div className="button-row">
-          <a className="button" href="/notebooks">View the executable notebook</a>
-          <a className="button-secondary" href="/methods">Read the methods</a>
-          <a className="button-quiet" href="/limitations">Understand the limitations</a>
+          <a className="button" href={sitePath("/notebooks")}>View the executable notebook</a>
+          <a className="button-secondary" href={sitePath("/methods")}>Read the methods</a>
+          <a className="button-quiet" href={sitePath("/limitations")}>Understand the limitations</a>
         </div>
       </section>
     </main>

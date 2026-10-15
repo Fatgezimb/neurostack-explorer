@@ -1,3 +1,4 @@
+import { sitePath } from "../../lib/paths";
 const footerLinks = [
   ["Analysis workspace", "/lab"],
   ["Complete pipeline", "/pipeline"],
@@ -38,7 +39,7 @@ export function SiteFooter() {
             const external = href.startsWith("http");
             return (
               <a
-                href={href}
+                href={sitePath(href)}
                 key={href}
                 rel={external ? "noopener noreferrer" : undefined}
                 target={external ? "_blank" : undefined}

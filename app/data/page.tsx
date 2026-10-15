@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function DataPage() {
-  return <main id="main-content"><DataExplorer /></main>;
+  return <main id="main-content" tabIndex={-1}><DataExplorer /></main>;
 }
