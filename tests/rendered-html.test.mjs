@@ -78,4 +78,3 @@ test("unknown tool routes return not found", async () => {
   const response = await render("/tools/not-a-tool");
   assert.equal(response.status, 404);
 });
-

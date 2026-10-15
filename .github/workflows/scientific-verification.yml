@@ -94,6 +94,18 @@ jobs:
       - name: Validate schema declarations
         run: node schemas/validate-schemas.mjs
 
+      - name: Cache the pinned public NWB source
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/neurostack-explorer/dandi/000582/0.251111.2151
+          key: nwb-000582-2b9e441b-56bc-4be2-893e-0e02d22d239d-43b3b435b953d22e
+
+      - name: Fetch and checksum the verified public source for notebook execution
+        run: make fetch-data PYTHON=python
+        env:
+          NEUROSTACK_DATASET_STATUS: verified
+          NEUROSTACK_ALLOW_PUBLIC_DATA_FETCH: "true"
+
       - name: Re-execute and checksum the sanitized notebook
         run: make verify-notebook PYTHON=python
 
@@ -108,7 +120,7 @@ jobs:
 
       - name: Explain externally gated regenerators
         run: |
-          echo "The pinned NWB source is not downloaded in CI."
+          echo "The pinned public NWB source was fetched or reused from a checksum-verified cache for notebook execution."
           echo "CmdStan model and BridgeStan fixture regeneration require their reviewed compiled toolchains."
           echo "Their committed outputs, checksums, diagnostics, source link, and manifests were validated above."
 

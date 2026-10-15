@@ -182,3 +182,10 @@ checks must confirm actual hydration, public-derived artifact loading, scientifi
 controls, dense-chart alternatives, desktop/mobile routing and correct asset
 paths. A build-size warning for the lazy Plotly runtime is not a model refit or a
 new scientific result.
+
+The scientific CI notebook executes against the original pinned public NWB file.
+Its workflow explicitly enables the reviewed fetch gate, caches that15.7MB
+source by immutable asset/checksum, and verifies its SHA before execution. This
+repairs the former clean-run failure that expected an absent local cache. Model
+refits remain externally gated; scientific result artifacts are not changed by
+this hosting repair.
