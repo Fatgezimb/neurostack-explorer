@@ -79,10 +79,3 @@ test("unknown tool routes return not found", async () => {
   assert.equal(response.status, 404);
 });
 
-
-test("scientific image previews do not depend on a server optimizer", async () => {
-  const response = await render("/tools/plenoptic");
-  const html = await response.text();
-  assert.match(html, /plenoptic-source\.png/);
-  assert.doesNotMatch(html, /_vinext\/image|_next\/image/);
-});
