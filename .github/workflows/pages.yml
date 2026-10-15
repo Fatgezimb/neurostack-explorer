@@ -32,7 +32,7 @@ jobs:
       - run: npm run lint && npm run typecheck && npm test
       - run: npm run test:pages
       - run: npm run start -- --port 4173 > /tmp/neurostack-server.log 2>&1 &
-      - run: npx --yes wait-on http://127.0.0.1:4173
+      - run: npx --yes wait-on --timeout 30000 http://127.0.0.1:4173/neurostack-explorer/
       - run: node scripts/export-pages.mjs
         env:
           PAGES_BASE_PATH: /neurostack-explorer
