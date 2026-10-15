@@ -126,7 +126,9 @@ site link.
 `scripts/execute_notebook.py` executes from a clean kernel, fails on a cell
 error, and strips wall-clock execution metadata. It verifies the committed
 public-derived and synthetic JSON, including embedded model records. It does
-not refit models or load the separate BridgeStan and plenoptic artifacts.
+load the separate BridgeStan and plenoptic artifacts. It refits the three Python
+model lanes and asserts their recorded metrics/configurations; Stan remains a
+reviewed precomputed artifact.
 
 ## Python verification
 
@@ -140,17 +142,21 @@ make verify-scientific PYTHON=python
 ```
 
 These targets run Ruff lint and formatting checks, mypy, pytest, a clean
-notebook recreation/execution with checksum and sanitization checks, deterministic
+notebook recreation/execution with exact scientific-output comparison, immutable
+release-file checksum and sanitization checks, deterministic
 plenoptic regeneration, manifest integrity checks, and the artifact validator
 both normally and with `python -O`. The optimized run confirms that validation
 does not depend on disabled `assert` statements. `make verify-python` also runs
 `python -m pip check`.
 
-The offline CI lane does not download the pinned NWB source or install compiled
-CmdStan/BridgeStan toolchains. Instead, it validates the committed public
-derivative, model results, BridgeStan fixture, provenance, diagnostics, source
-link, byte sizes, and SHA-256 records. Full source and fitted-model regeneration
-remains the separate clean-room sequence above.
+Scientific CI fetches or reuses the checksum-verified pinned public NWB source
+for notebook execution. A fresh in-memory execution must match every reviewed
+cell source, output and package version. Only the explicit OS-label line and
+wall-clock execution metadata may vary across runners. Verification does not
+rewrite the three immutable notebook copies, whose exact SHA-256 records remain
+checked separately. CI does not install compiled CmdStan/BridgeStan toolchains;
+it verifies their committed source links, diagnostics, bytes and SHA-256 records.
+Full Stan/BridgeStan regeneration remains the clean-room sequence above.
 
 Run every offline release gate, including the web build, with:
 

@@ -106,7 +106,7 @@ jobs:
           NEUROSTACK_DATASET_STATUS: verified
           NEUROSTACK_ALLOW_PUBLIC_DATA_FETCH: "true"
 
-      - name: Re-execute and checksum the sanitized notebook
+      - name: Compare re-executed notebook science and verify immutable release checksums
         run: make verify-notebook PYTHON=python
 
       - name: Regenerate the offline deterministic plenoptic fixture

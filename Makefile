@@ -99,16 +99,8 @@ notebook: ## Recreate and execute the deterministic notebook source.
 	$(PYTHON) scripts/create_notebook.py
 	$(PYTHON) scripts/execute_notebook.py
 
-verify-notebook: ## Re-execute the notebook and match its reviewed release checksum.
-	@expected="$$( $(PYTHON) -c 'import json; print(json.load(open("public/artifacts/v1/notebook-manifest.json"))["sha256"])' )"; \
-	$(MAKE) --no-print-directory notebook PYTHON="$(PYTHON)"; \
-	actual="$$( $(PYTHON) -c 'import hashlib; print(hashlib.sha256(open("$(NOTEBOOK)", "rb").read()).hexdigest())' )"; \
-	if [[ "$$actual" != "$$expected" ]]; then \
-		echo "Notebook checksum drifted: expected $$expected, found $$actual." >&2; \
-		exit 1; \
-	fi
-	cmp "$(NOTEBOOK)" public/artifacts/v1/neurostack-explorer.ipynb
-	cmp "$(NOTEBOOK)" public/downloads/neurostack_explorer.ipynb
+verify-notebook: ## Re-execute without changing release files; compare scientific outputs.
+	$(PYTHON) scripts/verify_notebook.py
 	$(PYTHON) .github/workflows/scripts/check-scientific-integrity.py
 
 verify-heavy-fixtures: ## Regenerate the offline plenoptic fixture and confirm byte stability.

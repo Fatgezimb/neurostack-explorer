@@ -184,11 +184,13 @@ paths. A build-size warning for the lazy Plotly runtime is not a model refit or 
 new scientific result.
 
 The scientific CI notebook executes against the original pinned public NWB file.
-Its workflow explicitly enables the reviewed fetch gate, caches that15.7MB
+Its workflow explicitly enables the reviewed fetch gate, caches that 15.7 MB
 source by immutable asset/checksum, and verifies its SHA before execution. This
-repairs the former clean-run failure that expected an absent local cache. Model
-refits remain externally gated; scientific result artifacts are not changed by
-this hosting repair.
+repairs the former clean-run failure that expected an absent local cache. The notebook refits and compares the three Python model lanes; compiled
+Stan/BridgeStan regeneration remains external. Fresh execution is compared cell
+by cell, allowing only the explicitly recorded OS label and timing metadata to
+vary. The immutable released notebook, model and dataset artifact bytes remain
+unchanged and retain their original manifest checksum checks.
 
 Web CI and deployment use Node24, matching the current Cloudflare/Vite runtime's
 `node:module.registerHooks` requirement. The old22.13 CI pin could install the
