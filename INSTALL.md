@@ -144,7 +144,8 @@ make verify-scientific PYTHON=python
 These targets run Ruff lint and formatting checks, mypy, pytest, a clean
 notebook recreation/execution with exact scientific-output comparison, immutable
 release-file checksum and sanitization checks, deterministic
-plenoptic regeneration, manifest integrity checks, and the artifact validator
+plenoptic regeneration with exact scientific JSON and decoded-pixel comparison,
+manifest integrity checks, and the artifact validator
 both normally and with `python -O`. The optimized run confirms that validation
 does not depend on disabled `assert` statements. `make verify-python` also runs
 `python -m pip check`.

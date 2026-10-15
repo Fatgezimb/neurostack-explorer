@@ -197,3 +197,9 @@ Web CI and deployment use Node24, matching the current Cloudflare/Vite runtime's
 lock but could not import the build adapter. No package version was upgraded
 for this correction; only two previously missing optional lock entries and the
 supported Node runtime declaration changed.
+
+The plenoptic verification likewise regenerates into a temporary directory. It
+requires exact JSON inputs, versions, configurations, metrics and arrays, valid
+image hashes, and identical decoded PNG mode/size/pixels. PNG compression may
+vary across encoders; released PNG/JSON bytes still pass the original manifest
+checks. Regression cases reject altered metrics, pixels, paths and hashes.

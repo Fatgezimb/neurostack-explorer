@@ -103,8 +103,8 @@ verify-notebook: ## Re-execute without changing release files; compare scientifi
 	$(PYTHON) scripts/verify_notebook.py
 	$(PYTHON) .github/workflows/scripts/check-scientific-integrity.py
 
-verify-heavy-fixtures: ## Regenerate the offline plenoptic fixture and confirm byte stability.
-	$(PYTHON) scripts/generate_plenoptic_demo.py
+verify-heavy-fixtures: ## Compare regenerated science/pixels without rewriting release artifacts.
+	$(PYTHON) scripts/verify_plenoptic.py
 	$(PYTHON) .github/workflows/scripts/check-scientific-integrity.py
 
 artifact-policy: ## Reject oversized, secret-like, or undocumented tracked data files.
