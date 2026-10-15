@@ -2,13 +2,15 @@
 
 ## Authorization status
 
-**Deployment is not authorized.**
+**The owner explicitly authorized repair and live verification of the existing public GitHub Pages release on October 15, 2026.**
+
+This authorization covers the existing `https://fatgezimb.github.io/neurostack-explorer/` target and its hosting-path repair. It does not change data provenance, scientific outputs, access policy, or hosting identity. The original readiness record below predates that public release.
 
 Do not create a production release, publish a preview containing unverified
 claims, change a hosting access policy, connect a custom domain, or reuse the
 main portfolio's hosting project identifier without explicit owner approval.
 
-This runbook documents readiness checks only.
+This runbook retains the original evidence gates; the hosting repair adds the checked release procedure below.
 
 ## Verified release inputs already recorded
 
@@ -150,3 +152,33 @@ reason, affected release, and any source/archive change that triggered rollback.
 Workflows under `.github/workflows/` perform verification only. They must not
 publish artifacts to a public service or deploy the application unless a later,
 explicitly approved change adds a reviewed release workflow.
+
+
+## GitHub Pages hosting repair (October 15, 2026)
+
+The public project target is `https://fatgezimb.github.io/neurostack-explorer/`.
+A successful deployment workflow alone did not prove hydration: the former
+exporter rewrote HTML attributes after a root build, leaving the dynamic import,
+font CSS, client state, and artifact requests at the account root.
+
+Build and render with the project base from the beginning:
+
+```sh
+PAGES_BASE_PATH=/neurostack-explorer npm run build
+PAGES_BASE_PATH=/neurostack-explorer npm run start -- --port 4273
+PAGES_BASE_PATH=/neurostack-explorer PAGES_SERVER=http://127.0.0.1:4273 node scripts/export-pages.mjs
+```
+
+`pages-dist` contains 24 HTML routes, matching embedded RSC payloads, client
+assets, public scientific artifacts, a real 404 page, robots and sitemap.
+The exporter rejects incomplete streams, unprefixed paths, and missing local
+resources before replacing an earlier export. Fonts and native history use
+version-checked Vinext adapters scoped to a Pages build. Static navigation uses
+ordinary links; root/server builds retain Next navigation.
+
+The Pages workflow installs the lockfile, runs lint, types, unit/rendered tests,
+and exporter regressions, then publishes this artifact. Public browser release
+checks must confirm actual hydration, public-derived artifact loading, scientific
+controls, dense-chart alternatives, desktop/mobile routing and correct asset
+paths. A build-size warning for the lazy Plotly runtime is not a model refit or a
+new scientific result.

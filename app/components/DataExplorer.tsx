@@ -1,5 +1,7 @@
 "use client";
 
+import { sitePath } from "../../lib/paths";
+
 import { useEffect, useState } from "react";
 import type { DemoDataset } from "../../lib/labData";
 import { createSyntheticFallback, loadDemoDataset } from "../../lib/labData";
@@ -52,7 +54,7 @@ export function DataExplorer() {
         <div className="button-row">
           <a className="button" href="https://dandiarchive.org/dandiset/000582/0.251111.2151" rel="noopener noreferrer" target="_blank">View dataset source<span className="visually-hidden"> (opens in a new tab)</span></a>
           <a className="button-secondary" href="#provenance">View provenance</a>
-          <a className="button-quiet" href="/methods#data-derivative">View conversion method</a>
+          <a className="button-quiet" href={sitePath("/methods#data-derivative")}>View conversion method</a>
         </div>
       </header>
 
@@ -100,7 +102,7 @@ export function DataExplorer() {
       <section className={styles.delivery}>
         <article><p className="eyebrow">Browser artifact</p><h2>{loading ? "Checking local artifact…" : dataset.metadata.origin === "public-derived" ? "Public-derived artifact loaded" : "Synthetic fallback loaded"}</h2><p>The UI preserves origin independently from execution. Client filtering never changes a synthetic fixture into public-derived evidence.</p><span className="status-pill" data-tone={dataset.metadata.origin === "public-derived" ? "public" : "synthetic"}>{dataset.metadata.origin}</span></article>
         <article><p className="eyebrow">Derivative policy</p><h2>Compact, deterministic, checksummed.</h2><ul><li>Preserve all eight unit IDs and source spike times.</li><li>Retain full 600-second LED1 position support.</li><li>Derive speed and analysis arrays with fixed parameters.</li><li>Omit multi-gigabyte or unused source payloads.</li></ul></article>
-        <article><p className="eyebrow">Validation</p><h2>Source and derivative checks.</h2><ul><li>Source SHA-256 matches.</li><li>PyNWB schema validation reports zero errors.</li><li>NWB Inspector’s four findings remain disclosed.</li><li>Timestamps, support, sample count, and unit IDs pass the derivative gates.</li></ul><a href="/artifacts/v1/validation-report.json">View validation report</a></article>
+        <article><p className="eyebrow">Validation</p><h2>Source and derivative checks.</h2><ul><li>Source SHA-256 matches.</li><li>PyNWB schema validation reports zero errors.</li><li>NWB Inspector’s four findings remain disclosed.</li><li>Timestamps, support, sample count, and unit IDs pass the derivative gates.</li></ul><a href={sitePath("/artifacts/v1/validation-report.json")}>View validation report</a></article>
       </section>
 
       <section className="notice">

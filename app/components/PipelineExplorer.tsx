@@ -1,5 +1,7 @@
 "use client";
 
+import { sitePath } from "../../lib/paths";
+
 import { useEffect, useState } from "react";
 import styles from "./PipelineExplorer.module.css";
 
@@ -77,8 +79,8 @@ export function PipelineExplorer() {
         </p>
         <div className="button-row">
           <button aria-pressed={playing && !reducedMotion} className="button" disabled={reducedMotion} onClick={() => setPlaying((current) => !current)} type="button">{reducedMotion ? "Motion preference: manual stages" : playing ? "Pause stage sequence" : "Play stage sequence"}</button>
-          <a className="button-secondary" href="/data">Inspect the source asset</a>
-          <a className="button-quiet" href="/methods">Read the methods</a>
+          <a className="button-secondary" href={sitePath("/data")}>Inspect the source asset</a>
+          <a className="button-quiet" href={sitePath("/methods")}>Read the methods</a>
         </div>
       </header>
 
@@ -139,7 +141,7 @@ export function PipelineExplorer() {
           <article><h3>Limitation</h3><p>{selected.limitation}</p></article>
         </div>
         <pre aria-label="Selected stage code excerpt" tabIndex={0}><code>{selected.code}</code></pre>
-        <div className="button-row"><a className="button-secondary" href={selected.href}>Open this module</a><a className="button-quiet" href="/sources">Official sources</a></div>
+        <div className="button-row"><a className="button-secondary" href={sitePath(selected.href)}>Open this module</a><a className="button-quiet" href={sitePath("/sources")}>Official sources</a></div>
       </section>
     </div>
   );

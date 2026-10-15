@@ -1,3 +1,5 @@
+import { sitePath } from "./paths";
+
 export type ArtifactOrigin = "public-derived" | "synthetic";
 
 export type BasisExplorer = {
@@ -539,7 +541,7 @@ export function normalizeDemoDataset(value: unknown): DemoDataset | null {
 
 export async function loadDemoDataset(signal?: AbortSignal): Promise<DemoDataset> {
   const load = async (url: string) => {
-    const response = await fetch(url, { signal, cache: "force-cache" });
+    const response = await fetch(sitePath(url), { signal, cache: "force-cache" });
     if (!response.ok) throw new Error(`Artifact request failed with ${response.status}`);
     const value: unknown = await response.json();
     const normalized = normalizeDemoDataset(value);

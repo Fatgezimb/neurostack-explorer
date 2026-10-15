@@ -1,5 +1,6 @@
+import { sitePath } from "../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../lib/Link";
 import { notebookArtifact } from "@/app/content/notebook";
 import styles from "./notebooks.module.css";
 
@@ -63,14 +64,14 @@ export default function NotebooksPage() {
           <span>Public execution: unavailable</span>
         </div>
         <div className="button-row">
-          <a href="/artifacts/v1/neurostack-explorer.ipynb" target="_blank" rel="noopener noreferrer">
+          <a href={sitePath("/artifacts/v1/neurostack-explorer.ipynb")} target="_blank" rel="noopener noreferrer">
             View notebook <span className="visually-hidden">(opens in a new tab)</span>
           </a>
-          <a href="/artifacts/v1/neurostack-explorer.ipynb" download="neurostack_explorer.ipynb">Download notebook</a>
+          <a href={sitePath("/artifacts/v1/neurostack-explorer.ipynb")} download="neurostack_explorer.ipynb">Download notebook</a>
           <a href="#reproduce-heading">Run locally</a>
           <a href="#notebook-preview">Read the notebook preview</a>
-          <Link href="/methods">Read the methods</Link>
-          <Link href="/limitations">Review limitations</Link>
+          <Link href={sitePath("/methods")}>Read the methods</Link>
+          <Link href={sitePath("/limitations")}>Review limitations</Link>
         </div>
       </header>
 

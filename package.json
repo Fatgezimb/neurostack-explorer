@@ -13,7 +13,8 @@
     "test:unit": "vitest run --config vitest.config.ts",
     "typecheck": "tsc --noEmit --incremental false",
     "verify": "npm run lint && npm run typecheck && npm test",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "test:pages": "node --test tests/pages-export.test.mjs"
   },
   "dependencies": {
     "next": "16.2.10",

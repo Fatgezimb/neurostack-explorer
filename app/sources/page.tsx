@@ -1,5 +1,6 @@
+import { sitePath } from "../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../lib/Link";
 import { sourceRegistry } from "@/app/content/sources";
 
 export const metadata: Metadata = {
@@ -30,9 +31,9 @@ export default function SourcesPage() {
           current support status informed that decision.
         </p>
         <div className="button-row">
-          <Link href="/methods">See how sources enter the method</Link>
-          <Link href="/tools">Explore the tools</Link>
-          <Link href="/limitations">Review evidence limits</Link>
+          <Link href={sitePath("/methods")}>See how sources enter the method</Link>
+          <Link href={sitePath("/tools")}>Explore the tools</Link>
+          <Link href={sitePath("/limitations")}>Review evidence limits</Link>
         </div>
       </header>
 

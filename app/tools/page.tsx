@@ -1,5 +1,6 @@
+import { sitePath } from "../../lib/paths";
 import type { Metadata } from "next";
-import Link from "next/link";
+import Link from "../../lib/Link";
 import { tools } from "@/app/content/tools";
 
 export const metadata: Metadata = {
@@ -28,9 +29,9 @@ export default function ToolsPage() {
           and which claims are supported by versioned artifacts.
         </p>
         <div className="button-row">
-          <Link href="/methods">Read the methods</Link>
-          <Link href="/sources">Audit the sources</Link>
-          <Link href="/limitations">Understand the limits</Link>
+          <Link href={sitePath("/methods")}>Read the methods</Link>
+          <Link href={sitePath("/sources")}>Audit the sources</Link>
+          <Link href={sitePath("/limitations")}>Understand the limits</Link>
         </div>
       </header>
 

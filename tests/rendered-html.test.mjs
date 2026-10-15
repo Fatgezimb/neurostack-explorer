@@ -44,7 +44,7 @@ async function worker() {
 async function render(pathname) {
   const server = await worker();
   return server.fetch(
-    new Request(`http://localhost${pathname}`, { headers: { accept: "text/html" } }),
+    new Request(`http://localhost${process.env.PAGES_BASE_PATH ?? ""}${pathname}`, { headers: { accept: "text/html" } }),
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
     { waitUntil() {}, passThroughOnException() {} },
   );
@@ -77,4 +77,12 @@ test("home exposes scope, provenance, and safe external links", async () => {
 test("unknown tool routes return not found", async () => {
   const response = await render("/tools/not-a-tool");
   assert.equal(response.status, 404);
+});
+
+
+test("scientific image previews do not depend on a server optimizer", async () => {
+  const response = await render("/tools/plenoptic");
+  const html = await response.text();
+  assert.match(html, /plenoptic-source\.png/);
+  assert.doesNotMatch(html, /_vinext\/image|_next\/image/);
 });
