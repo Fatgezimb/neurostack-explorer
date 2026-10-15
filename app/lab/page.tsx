@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function LabPage() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <LabWorkspace />
     </main>
   );

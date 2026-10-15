@@ -58,6 +58,7 @@ for (const [pathname, expected] of routes) {
     const html = await response.text();
     assert.match(html, expected);
     assert.match(html, /Skip to main content/);
+    assert.match(html, /<main[^>]*id="main-content"[^>]*tabindex="-1"/);
     assert.match(html, /NeuroStack Explorer/);
     assert.doesNotMatch(html, /Your site is taking shape|Codex is working|react-loading-skeleton/i);
   });

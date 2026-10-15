@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PipelinePage() {
-  return <main id="main-content"><PipelineExplorer /></main>;
+  return <main id="main-content" tabIndex={-1}><PipelineExplorer /></main>;
 }

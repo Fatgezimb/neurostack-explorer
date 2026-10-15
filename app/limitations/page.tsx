@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function LimitationsPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Limitations</p>
         <h1>What this demonstration cannot establish.</h1>

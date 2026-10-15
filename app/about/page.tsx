@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">About the project</p>
         <h1>Built by Fatgezim “Zim” Bela.</h1>

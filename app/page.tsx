@@ -51,7 +51,7 @@ const toolStatuses: Record<(typeof tools)[number]["slug"], { label: string; tone
 
 export default function Home() {
   return (
-    <main id="main-content">
+    <main id="main-content" tabIndex={-1}>
       <section className={`${styles.hero} section-shell`}>
         <div className={styles.heroCopy}>
           <p className="eyebrow">NeuroStack Explorer / technical demonstration</p>

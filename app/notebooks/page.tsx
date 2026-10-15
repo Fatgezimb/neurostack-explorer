@@ -49,7 +49,7 @@ const previewCells = [
 
 export default function NotebooksPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Research notebook</p>
         <h1>{notebookArtifact.title}</h1>

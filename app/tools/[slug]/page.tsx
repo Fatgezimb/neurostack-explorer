@@ -40,7 +40,7 @@ export default async function ToolPage({ params }: ToolPageProps) {
   const nextTool = tool.nextTool ? getTool(tool.nextTool) : null;
 
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">{tool.category} / technology module</p>
         <h1>{tool.name}</h1>

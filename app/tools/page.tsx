@@ -19,7 +19,7 @@ const categories = [
 
 export default function ToolsPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Technology stack</p>
         <h1>Twelve tools, one inspectable workflow.</h1>

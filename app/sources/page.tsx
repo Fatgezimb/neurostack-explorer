@@ -19,7 +19,7 @@ function ExternalSourceLink({ href, label }: { href: string; label: string }) {
 
 export default function SourcesPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Source registry</p>
         <h1>First-party links, with verification status attached.</h1>

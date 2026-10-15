@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function MethodsPage() {
   return (
-    <main className="page-shell" id="main-content">
+    <main className="page-shell" id="main-content" tabIndex={-1}>
       <header className="page-intro">
         <p className="eyebrow">Methods</p>
         <h1>An evidence chain from public source to browser view.</h1>

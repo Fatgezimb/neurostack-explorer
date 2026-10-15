@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function VisualizationsPage() {
-  return <main id="main-content"><ScientificFigureViewer /></main>;
+  return <main id="main-content" tabIndex={-1}><ScientificFigureViewer /></main>;
 }
